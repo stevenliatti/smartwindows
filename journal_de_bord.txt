@@ -1,0 +1,6 @@
+Smart Windows - Journal de bord
+
+29.08.2016
+Nous avons fait une ébauche de notre projet, réalisé la présentation powerpoint avec le schéma de situation et avons mis en place notre repository git pour se partager les fichiers et avoir un suivi de notre projet. Nous avons exploré les commandes git.
+
+30.08.2016
