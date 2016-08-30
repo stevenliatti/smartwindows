@@ -1,0 +1,4 @@
+-gestion multi utilisateur (autorisation, consultation, permission, droit d'accès) 
+-plages horaires d'ouverture
+-ouverture en fonction du vent et température
+-Slider javascript pour l'ouverture progressive des stores
