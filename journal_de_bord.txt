@@ -6,3 +6,9 @@ avec le schéma de situation et avons mis en place notre repository git pour se 
 les fichiers et avoir un suivi de notre projet. Nous avons exploré les commandes git.
 
 30.08.2016
+Le matin était dédié aux présentations initiales.
+Orphée et Raed ont réussi à se connecter au sensor tag via la waspmote et ont tenté de
+de récupérer la valeur de température, sans succès pour le moment.
+Steven a commencé à lire des tutoriels sur les sockets en php, pour le serveur web qui 
+récupérera les données de la waspmote.
+(http://www.binarytides.com/php-socket-programming-tutorial/)
