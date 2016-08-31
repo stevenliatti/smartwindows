@@ -12,3 +12,13 @@ de récupérer la valeur de température, sans succès pour le moment.
 Steven a commencé à lire des tutoriels sur les sockets en php, pour le serveur web qui 
 récupérera les données de la waspmote.
 (http://www.binarytides.com/php-socket-programming-tutorial/)
+
+31.08.2016
+Orphée et Raed ont continué à bosser sur la récupération des valeurs des capteurs : 
+ils ont réussi à capturer la température et la luminosité via la méthode de notifications et 
+à convertir les données hexadécimales en résultats exploitables (shift et ou bit à bit).
+Steven a continué à explorer les sockets en php, plusieurs méthodes seraient envisageables.
+On a configuré un Wifly sur la gateway de la salle, on pourra l'utiliser pour envoyer les 
+données de la waspmote. Il communique en UART avec celle-ci.
+Demain on essayera de trouver le moyen pour que ces deux modules communiquent (waspmote et
+wifly).
