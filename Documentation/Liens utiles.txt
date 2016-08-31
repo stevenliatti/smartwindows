@@ -1,0 +1,2 @@
+waspmote + wifly
+http://support.lhings.com/Getting-started-tutorial-with-Waspmote.html
