@@ -5,8 +5,8 @@
 error_reporting(~E_NOTICE);
 set_time_limit (0);
 
-$address = "0.0.0.0";
-$port = 5000;
+$address = "127.0.0.1";
+$port = 2000;
 $max_clients = 10;
 
 if(!($sock = socket_create(AF_INET, SOCK_STREAM, 0))) {
@@ -19,7 +19,7 @@ if(!($sock = socket_create(AF_INET, SOCK_STREAM, 0))) {
 echo "Socket created \n";
 
 // Bind the source address
-if(!socket_bind($sock, $address, 5000)) {
+if(!socket_bind($sock, $address, $port)) {
 	$errorcode = socket_last_error();
 	$errormsg = socket_strerror($errorcode);
 	
