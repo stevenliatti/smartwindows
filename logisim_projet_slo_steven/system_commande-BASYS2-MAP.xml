@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<LogisimGoesFPGABoardMapInformation>
+<GlobalMapInformation BoardName="BASYS2" ToplevelCircuitName="system_commande"/>
+<MAPPEDCOMPONENT_1 Height="9" Key="PIN: /Tx0#Pin0" LocationX="500" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_2 Height="9" Key="PIN: /Tx1#Pin0" LocationX="514" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_3 Height="5" Key="PIN: /a#Pin0" LocationX="484" LocationY="252" Width="17"/>
+<MAPPEDCOMPONENT_4 Height="12" Key="PIN: /b#Pin0" LocationX="502" LocationY="255" Width="5"/>
+<MAPPEDCOMPONENT_5 Height="12" Key="PIN: /c#Pin0" LocationX="502" LocationY="269" Width="5"/>
+<MAPPEDCOMPONENT_6 Height="17" Key="PIN: /clock#Pin0" LocationX="457" LocationY="196" Width="32"/>
+<MAPPEDCOMPONENT_7 Height="9" Key="PIN: /cs0#Pin0" LocationX="128" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_8 Height="9" Key="PIN: /cs1#Pin0" LocationX="247" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_9 Height="5" Key="PIN: /d#Pin0" LocationX="484" LocationY="281" Width="17"/>
+<MAPPEDCOMPONENT_a Height="12" Key="PIN: /e#Pin0" LocationX="478" LocationY="270" Width="5"/>
+<MAPPEDCOMPONENT_b Height="12" Key="PIN: /f#Pin0" LocationX="478" LocationY="256" Width="5"/>
+<MAPPEDCOMPONENT_c Height="5" Key="PIN: /g#Pin0" LocationX="486" LocationY="265" Width="14"/>
+<MAPPEDCOMPONENT_d Height="9" Key="PIN: /miso0#Pin0" LocationX="142" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_e Height="9" Key="PIN: /miso1#Pin0" LocationX="260" LocationY="92" Width="9"/>
+<MAPPEDCOMPONENT_f Height="10" Key="PIN: /out0#Pin0" LocationX="620" LocationY="288" Width="35"/>
+<MAPPEDCOMPONENT_10 Height="10" Key="PIN: /out1#Pin0" LocationX="574" LocationY="288" Width="35"/>
+<MAPPEDCOMPONENT_11 Height="10" Key="PIN: /out2#Pin0" LocationX="526" LocationY="288" Width="35"/>
+<MAPPEDCOMPONENT_12 Height="10" Key="PIN: /out3#Pin0" LocationX="479" LocationY="288" Width="35"/>
+<MAPPEDCOMPONENT_13 Height="24" Key="PIN: /reset#Pin0" LocationX="583" LocationY="310" Width="35"/>
+<MAPPEDCOMPONENT_14 Height="9" Key="PIN: /sclk#Pin0" LocationX="373" LocationY="92" Width="9"/>
+</LogisimGoesFPGABoardMapInformation>
