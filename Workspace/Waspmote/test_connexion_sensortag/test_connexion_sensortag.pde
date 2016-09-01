@@ -30,12 +30,39 @@
 
 // Auxiliary variable
 uint8_t aux = 0;
+uint16_t flag = 0;
 
 // MAC address of BLE device to find and connect.
 char MAC[14] = "b0b448c45486";
 
 //char attributeData[20] = "att 1.0 written";
 unsigned char attributeData[] = {1};
+
+// Variable to count notify events
+uint8_t eventCounter = 0;
+
+// Convertisseur température
+void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
+{
+  const float SCALE_LSB = 0.03125;
+  float t;
+  int it;
+ 
+  it = (int)((rawAmbTemp) >> 2);
+  t = ((float)(it)) * SCALE_LSB;
+  *tAmb = t;
+}
+
+// Convertisseur intensité lumineuse
+float sensorOpt3001Convert(uint16_t rawData)
+{
+  uint16_t e, m;
+ 
+  m = rawData & 0x0FFF;
+  e = (rawData & 0xF000) >> 12;
+ 
+  return m * (0.01 * pow(2.0,e));
+}
 
 void setup() 
 {  
@@ -91,73 +118,215 @@ void loop()
         USB.print(BLE.attributeValue[i+1]);        
       }
       USB.println();
+      USB.println();
+      delay(3000);
+      
+      /*-----------------------------------*/
+      /* CONFIGURATION CAPTEUR TEMPERATURE */
+      /*-----------------------------------*/
 
-
+      attributeData[0] = 1;
       // 5 Now remotely write an attribute with the data defined at the beginning.
       USB.println(F("Writing attribute.. "));
       if (BLE.attributeWrite(BLE.connection_handle,  36, attributeData, 1) == 0)
       {
-        USB.println(F("Write OK."));
+        USB.println(F("Temperature measurement in progress.."));
       }   
+
+      /* 6. Subscribe to notifications of one characteristic. 
+       In this case an attribute with handler 44.
+       
+       NOTE 1: the client characteristic configuration attribute of 
+       this characteristic has the handler 46.
+       
+       NOTE 2: To subscribe notifications it is necessary to write a '1'
+      */
+      uint8_t notify_temp[2] = {1,0};
+      flag = BLE.attributeWrite(BLE.connection_handle, 34, notify_temp, 2);
       
-//       // 5.1 Read attribute again to demonstrate write operation.
-//      USB.println(F("Reading attribute.. "));
-//      BLE.attributeRead(BLE.connection_handle,  36); 
-//
-//
-//      // 5.2 Print attribute value. First byte of BLE.attributeValue is the length of the value.
-//      USB.print(F("Attribute Value: "));
-//      for(uint8_t i = 0; i < BLE.attributeValue[0]; i++)
-//      {
-//        USB.printHex(BLE.attributeValue[i+1]);        
-//      }
-//      USB.println();
-//
-//      // Print attribute in ASCII
-//      USB.print(F("Attribute Value (ASCII): "));
-//      for(uint8_t i = 0; i < BLE.attributeValue[0]; i++)
-//      {
-//        USB.print(BLE.attributeValue[i+1]);        
-//      }
-//      USB.println();
-//
-//      delay(1000);
-
-
-      // 6 Read attribute again to demonstrate write operation.
-      USB.println(F("Reading attribute.. "));
-      BLE.attributeRead(BLE.connection_handle, 33); 
-
-
-      // 6.1 Print attribute value. First byte of BLE.attributeValue is the length of the value.
-      USB.print(F("Attribute Value: "));
-      for(uint8_t i = 0; i < BLE.attributeValue[0]; i++)
+       if (flag == 0)
       {
-        USB.printHex(BLE.attributeValue[i+1]);        
-      }
-      USB.println();
+        // 7 Read attribute again to demonstrate write operation.
+        USB.println(F("Reading attribute.. "));
+        BLE.attributeRead(BLE.connection_handle, 33); 
+        
+        /* 8. Notify subscription successful. Now start a loop till 
+         receive 5 notification or timeout is reached (30 seconds). If disconnected, 
+         then exit while loop.
+         
+         NOTE 3: 5 notifications are done by the example BLE_11.
+         */
+        eventCounter = 0;
+        unsigned long previous = millis();
+        while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
+        {
+          // 8.1 Wait for indicate event. 
+          USB.println(F("Waiting events..."));
+          flag = BLE.waitEvent(5000);
 
-      // Print attribute in ASCII
-      USB.print(F("Attribute Value (ASCII): "));
-      for(uint8_t i = 0; i < BLE.attributeValue[0]; i++)
-      {
-        USB.print(BLE.attributeValue[i+1]);        
-      }
-      USB.println();
+          if (flag == BLE_EVENT_ATTCLIENT_ATTRIBUTE_VALUE)
+          {
+            USB.println(F("Notification received."));
 
-      delay(1000);
+            /* attribute value event structure:
+             Field:   | Message type | Payload| Msg Class | Method |  Connection |...
+             Length:  |       1      |    1   |     1     |    1   |      1      |...
+             Example: |      80      |   05   |     04    |   05   |     00      |...
+             
+             ...| att handle | att type | value |
+             ...|     2      |     8    |   n   |
+             ...|   2c 00    |     x    |   n   |
+             */
 
+            // 8.2 Extract the handler from the received event saved on the buffer BLE.event
+            uint16_t handler = ((uint16_t)BLE.event[6] << 8) | BLE.event[5];
+            USB.print("attribute with handler ");
+            USB.print(handler, DEC);
+            USB.println(" has changed. ");
 
-      // 7. disconnect. Remember that after a disconnection, the slave becomes invisible automatically.
-      BLE.disconnect(BLE.connection_handle);
-      if (BLE.errorCode != 0) 
-      {
-        USB.println(F("Disconnect fail"));
+            // 8.3 Print attribute value
+            float tAmb;
+            uint16_t rawAmbTemp = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
+            sensorTmp007Convert(rawAmbTemp, &tAmb);
+            USB.print("Ambiant temperature: ");
+            USB.println(tAmb);
+            USB.println();
+
+            eventCounter++;
+            flag = 0;
+          }
+          else
+          {
+            // 8.4 If disconnection event is received, then exit the while loop.
+            if (flag == BLE_EVENT_CONNECTION_DISCONNECTED)
+            {
+              break;
+            }
+          }
+
+          // Condition to avoid an overflow (DO NOT REMOVE)
+          if( millis() < previous ) previous=millis();
+
+        } // end while loop
       }
       else
       {
-        USB.println(F("Disconnected."));
+        USB.println(F("Failed subscribing."));
+        USB.println();
+      }
+      attributeData[0] = 0;
+      if (BLE.attributeWrite(BLE.connection_handle,  36, attributeData, 1) != 0)
+      {
+        USB.println(F("Temperature measurement put to sleep"));
+        USB.println();
+      }   
+      delay(1000);
+      
+      /*----------------------------------*/
+      /* CONFIGURATION CAPTEUR LUMINOSITE */
+      /*----------------------------------*/      
+      
+      flag = 0;
+      attributeData[0] = 1;
+      // 9 Now remotely write an attribute with the data defined at the beginning.
+      USB.println(F("Writing attribute.. "));
+      if (BLE.attributeWrite(BLE.connection_handle,  68, attributeData, 1) == 0)
+      {
+        USB.println(F("Light intensity measurement in progress.."));
+      }   
+
+      /* 10. Subscribe to notifications of one characteristic. 
+       In this case an attribute with handler 44.
+       
+       NOTE 1: the client characteristic configuration attribute of 
+       this characteristic has the handler 46.
+       
+       NOTE 2: To subscribe notifications it is necessary to write a '1'
+      */
+      uint8_t notify_lux[2] = {1,0};
+      flag = BLE.attributeWrite(BLE.connection_handle, 66, notify_lux, 2);
+      
+       if (flag == 0)
+      {
+        // 11 Read attribute again to demonstrate write operation.
+        USB.println(F("Reading attribute.. "));
+        BLE.attributeRead(BLE.connection_handle, 65); 
+        
+        /* 12. Notify subscription successful. Now start a loop till 
+         receive 5 notification or timeout is reached (30 seconds). If disconnected, 
+         then exit while loop.
+         
+         NOTE 3: 5 notifications are done by the example BLE_11.
+         */
+        eventCounter = 0;
+        unsigned long previous = millis();
+        while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
+        {
+          // 12.1 Wait for indicate event. 
+          USB.println(F("Waiting events..."));
+          flag = BLE.waitEvent(5000);
+
+          if (flag == BLE_EVENT_ATTCLIENT_ATTRIBUTE_VALUE)
+          {
+            USB.println(F("Notification received."));
+
+            /* attribute value event structure:
+             Field:   | Message type | Payload| Msg Class | Method |  Connection |...
+             Length:  |       1      |    1   |     1     |    1   |      1      |...
+             Example: |      80      |   05   |     04    |   05   |     00      |...
+             
+             ...| att handle | att type | value |
+             ...|     2      |     8    |   n   |
+             ...|   2c 00    |     x    |   n   |
+             */
+
+            // 12.2 Extract the handler from the received event saved on the buffer BLE.event
+            uint16_t handler = ((uint16_t)BLE.event[6] << 8) | BLE.event[5];
+            USB.print("attribute with handler ");
+            USB.print(handler, DEC);
+            USB.println(" has changed. ");
+
+            // 12.3 Print attribute value
+            float iLum;
+            uint16_t rawData = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
+            iLum = sensorOpt3001Convert(rawData);
+            USB.print("Light Intensity: ");
+            USB.println(iLum);
+            USB.println();
+
+            eventCounter++;
+            flag = 0;
+          }
+          else
+          {
+            // 12.4 If disconnection event is received, then exit the while loop.
+            if (flag == BLE_EVENT_CONNECTION_DISCONNECTED)
+            {
+              break;
+            }
+          }
+
+          // Condition to avoid an overflow (DO NOT REMOVE)
+          if( millis() < previous ) previous=millis();
+
+        } // end while loop
+      }
+      else
+      {
+        USB.println(F("Failed subscribing."));
+        USB.println();
+      }
+      attributeData[0] = 0;
+      if (BLE.attributeWrite(BLE.connection_handle,  68, attributeData, 1) != 0)
+      {
+        USB.println(F("Light intensity measurement put to sleep"));
+        USB.println();
       } 
+      delay(1000);
+      
+      // 13. disconnect. Remember that after a disconnection, the slave becomes invisible automatically.
+      BLE.disconnect(BLE.connection_handle);
+      USB.println(F("Disconnected."));
     }
     else
     {
@@ -172,24 +341,7 @@ void loop()
   USB.println();
   delay(5000);
 
-  /* Note 3: On the slave node, next events will arise: 
-   
-   - Status event:     80 10 03 00 00 05 bf 9e 78 80 07 00 00 3c 00 64 00 00 00 ff
-   - Value event:      80 17 02 00 00 00 20 00 00 00 + data written  
-   - Disconnect event: 80 03 03 04 00 13 02 
-   
-   */
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
