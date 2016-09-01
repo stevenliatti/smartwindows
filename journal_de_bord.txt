@@ -22,3 +22,9 @@ On a configuré un Wifly sur la gateway de la salle, on pourra l'utiliser pour e
 données de la waspmote. Il communique en UART avec celle-ci.
 Demain on essayera de trouver le moyen pour que ces deux modules communiquent (waspmote et
 wifly).
+
+01.09.2016
+Nous avons passé la journée à faire marcher la communication UART. Nous avons enfin un code
+qui permet d'écrire sur les port UART. On arrive à récupérer les data depuis un ordi via le
+Wifly branché sur les ports UART de la Waspmote. Nous sommes heureux mais fatigués. :-)
+Demain nous allons faire la fusion des codes de bluetooth et UART.
