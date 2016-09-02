@@ -28,3 +28,13 @@ Nous avons passé la journée à faire marcher la communication UART. Nous avons
 qui permet d'écrire sur les port UART. On arrive à récupérer les data depuis un ordi via le
 Wifly branché sur les ports UART de la Waspmote. Nous sommes heureux mais fatigués. :-)
 Demain nous allons faire la fusion des codes de bluetooth et UART.
+
+02.09.2016
+Ce matin nous avons réussi à envoyer une requête cliente (phpmanual/client.php) au Wifly 
+(Steven) pour récupérer des données formatées (Orphée : température et luminosité) : ce 
+n'était pas du tout optimal, nous avions les données comme sur putty, mais on arrivait au 
+timeout de la page. En attendant, Raed a pris en main CakePHP et a généré deux vues à partir
+des tables de data et des users en base de données. L'après-midi, Orphée a réussi à lire les 
+données de deux sensors tag (températures internes et externes). En fin de journée, nous 
+avons enfin réussi à créer un socket server en python, pour lire les données envoyées depuis
+le Wifly.
