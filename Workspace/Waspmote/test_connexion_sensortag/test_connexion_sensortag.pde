@@ -33,7 +33,7 @@ uint8_t aux = 0;
 uint16_t flag = 0;
 
 // MAC address of BLE device to find and connect.
-char MAC[14] = "b0b448c45486";
+char MAC[14] = "b0b448c99d00";
 
 //char attributeData[20] = "att 1.0 written";
 unsigned char attributeData[] = {1};
@@ -70,6 +70,13 @@ void setup()
 
   // 0. Turn BLE module ON
   BLE.ON(SOCKET0);
+  
+  // 0.1 Turn UART ON
+  Utils.setMuxAux1();
+  beginSerial(115200,1);
+  serialFlush(1);  //clear buffers
+  
+  delay(500);
 }
 
 void loop() 
@@ -119,6 +126,7 @@ void loop()
       }
       USB.println();
       USB.println();
+      printNewline(1);
       delay(3000);
       
       /*-----------------------------------*/
@@ -191,6 +199,9 @@ void loop()
             USB.print("Ambiant temperature: ");
             USB.println(tAmb);
             USB.println();
+            printString("Temperature: ",1);
+            printInteger((int)tAmb,1);
+            printNewline(1);
 
             eventCounter++;
             flag = 0;
@@ -293,6 +304,9 @@ void loop()
             USB.print("Light Intensity: ");
             USB.println(iLum);
             USB.println();
+            printString("Luminosity: ",1);
+            printInteger((int)iLum,1);
+            printNewline(1);
 
             eventCounter++;
             flag = 0;
@@ -327,6 +341,7 @@ void loop()
       // 13. disconnect. Remember that after a disconnection, the slave becomes invisible automatically.
       BLE.disconnect(BLE.connection_handle);
       USB.println(F("Disconnected."));
+      printString("done",1);
     }
     else
     {
