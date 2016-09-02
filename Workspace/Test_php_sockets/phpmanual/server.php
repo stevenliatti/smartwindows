@@ -10,7 +10,7 @@ set_time_limit(0);
 ob_implicit_flush();
 
 $address = '127.0.0.1';
-$port = 10000;
+$port = 2000;
 
 if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
     echo "socket_create() a échoué : raison : " . socket_strerror(socket_last_error()) . "\n";
@@ -35,7 +35,7 @@ do {
     socket_write($msgsock, $msg, strlen($msg));
 
     do {
-        if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
+        if (false === ($buf = socket_read($msgsock, 1460, PHP_NORMAL_READ))) {
             echo "socket_read() a échoué : raison : " . socket_strerror(socket_last_error($msgsock)) . "\n";
             break 2;
         }

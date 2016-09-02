@@ -5,10 +5,10 @@ error_reporting(E_ALL);
 echo "<h2>Connexion TCP/IP</h2>\n";
 
 /* Lit le port du service WWW. */
-$service_port = getservbyname('www', 'tcp');
+$service_port = 2000;
 
 /* Lit l'adresse IP du serveur de destination */
-$address = '127.0.0.1';
+$address = '192.168.32.241';
 
 /* Crée un socket TCP/IP. */
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -26,19 +26,13 @@ if ($socket === false) {
     echo "OK.\n";
 }
 
-$in = "HEAD / HTTP/1.0\r\n\r\n";
-$in .= "Host: www.example.com\r\n";
-$in .= "Connection: Close\r\n\r\n";
-$out = '';
+$in = "salut";
 
 echo "Envoi de la requête HTTP HEAD...";
 socket_write($socket, $in, strlen($in));
 echo "OK.\n";
 
-echo "Lire la réponse : \n\n";
-while ($out = socket_read($socket, 2048)) {
-    echo $out;
-}
+
 
 echo "Fermeture du socket...";
 socket_close($socket);
