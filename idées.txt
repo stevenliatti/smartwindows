@@ -2,3 +2,4 @@
 -plages horaires d'ouverture
 -ouverture en fonction du vent et température
 -Slider javascript pour l'ouverture progressive des stores
+-gestion de l'alimentation des waspmote et wifly : envoi de données périodique, mode sleep, etc. 
