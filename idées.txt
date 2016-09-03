@@ -1,5 +1,9 @@
--gestion multi utilisateur (autorisation, consultation, permission, droit d'accès) 
+﻿-gestion multi utilisateur (autorisation, consultation, permission, droit d'accès) 
 -plages horaires d'ouverture
 -ouverture en fonction du vent et température
 -Slider javascript pour l'ouverture progressive des stores
 -gestion de l'alimentation des waspmote et wifly : envoi de données périodique, mode sleep, etc. 
+-ajouter un capteur de mouvement
+
+ comme étant un système d'alarmee commandé par la carte waspmote
+-au lieu de la led et du bargraph, on peut mettre en place des servomoteurs pour une simulation plus proche de la réalité
