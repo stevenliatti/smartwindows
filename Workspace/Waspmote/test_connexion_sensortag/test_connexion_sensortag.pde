@@ -157,7 +157,6 @@ void loop()
             USB.println(tAmb);
             USB.println();
             dtostrf(tAmb,0, 2, outstr);
-            printString("TI:",1);
             printString(outstr,1);
 
             eventCounter++;
@@ -245,7 +244,6 @@ void loop()
             USB.println(iLum);
             USB.println();
             dtostrf(iLum,0, 2, outstr);
-            printString("L:",1);
             printString(outstr,1);
 
             eventCounter++;
@@ -396,7 +394,6 @@ void loop()
             USB.println(tAmb);
             USB.println();
             dtostrf(tAmb,0, 2, outstr);
-            printString("TE:",1);
             printString(outstr,1);
 
             eventCounter++;
