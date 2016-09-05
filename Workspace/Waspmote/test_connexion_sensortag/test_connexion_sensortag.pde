@@ -53,6 +53,9 @@ void setup()
   beginSerial(115200,1);
   serialFlush(1);  //clear buffers
   
+  // 0.2 Initialisation des pins de sortie
+  pinMode(DIGITAL2, OUTPUT);
+  
   delay(500);
 }
 
@@ -132,6 +135,8 @@ void loop()
          */
         eventCounter = 0;
         unsigned long previous = millis();
+        float tAmb = 0;
+        float sum_TI = 0;
         while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
         {
           // 8.1 Wait for indicate event. 
@@ -149,15 +154,12 @@ void loop()
             USB.println(" has changed. ");
 
             // 8.3 Print attribute value
-            float tAmb;
             uint16_t rawAmbTemp = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
             sensorTmp007Convert(rawAmbTemp, &tAmb);
             USB.print("Intern temperature: ");
             USB.println(tAmb);
             USB.println();
-            dtostrf(tAmb,0, 2, outstr);
-            printString(outstr,1);
-
+            sum_TI = sum_TI + tAmb;
             eventCounter++;
             flag = 0;
           }
@@ -174,6 +176,13 @@ void loop()
           if( millis() < previous ) previous=millis();
 
         } // end while loop
+        
+        // Calcul de la moyenne des températures
+        tAmb = sum_TI / eventCounter;
+        
+        // Envoi des données sur le wifly
+        dtostrf(tAmb,0, 2, outstr);
+        printString(outstr,1);
       }
       else
       {
@@ -218,6 +227,8 @@ void loop()
          
         eventCounter = 0;
         unsigned long previous = millis();
+        float iLum = 0;
+        float sum_L = 0;
         while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
         {
           // 12.1 Wait for indicate event. 
@@ -235,15 +246,12 @@ void loop()
             USB.println(" has changed. ");
 
             // 12.3 Print attribute value
-            float iLum;
             uint16_t rawData = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
             iLum = sensorOpt3001Convert(rawData);
             USB.print("Light Intensity: ");
             USB.println(iLum);
             USB.println();
-            dtostrf(iLum,0, 2, outstr);
-            printString(outstr,1);
-
+            sum_L = sum_L + iLum;
             eventCounter++;
             flag = 0;
           }
@@ -260,6 +268,13 @@ void loop()
           if( millis() < previous ) previous=millis();
 
         } // end while loop
+        
+        // Calcul de la moyenne de luminosité
+        iLum = sum_L / eventCounter;
+        
+        // Envoi des données sur le wifly
+        dtostrf(iLum,0, 2, outstr);
+        printString(outstr,1);
       }
       else
       {
@@ -365,6 +380,8 @@ void loop()
          */
         eventCounter = 0;
         unsigned long previous = millis();
+        float tAmb = 0;
+        float sum_TE = 0;
         while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
         {
           // 8.1 Wait for indicate event. 
@@ -382,15 +399,12 @@ void loop()
             USB.println(" has changed. ");
 
             // 8.3 Print attribute value
-            float tAmb;
             uint16_t rawAmbTemp = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
             sensorTmp007Convert(rawAmbTemp, &tAmb);
             USB.print("Extern temperature: ");
             USB.println(tAmb);
             USB.println();
-            dtostrf(tAmb,0, 2, outstr);
-            printString(outstr,1);
-
+            sum_TE = sum_TE + tAmb;
             eventCounter++;
             flag = 0;
           }
@@ -407,6 +421,13 @@ void loop()
           if( millis() < previous ) previous=millis();
 
         } // end while loop
+        
+        // Calcul de la moyenne des températures
+        tAmb = sum_TE / eventCounter;
+        
+        // Envoi des données sur le wifly
+        dtostrf(tAmb,0, 2, outstr);
+        printString(outstr,1);
       }
       else
       {
@@ -444,14 +465,15 @@ void loop()
   /*-----------------------------------*/
   
   USB.println("Received data: ");
-  delay(5000);
+  USB.println();
   while(serialAvailable(1))
   {
-    if(serialRead(1) == 111 && digitalRead(1) == 0){
-      digitalWrite(1,HIGH);
+    USB.println(serialRead(1));
+    if(serialRead(1) == 111){
+      digitalWrite(DIGITAL2,HIGH);
     }
     else if(serialRead(1) == 99 && digitalRead(1) == 1){
-      digitalWrite(1,LOW);
+      digitalWrite(DIGITAL2,LOW);
     }
   }
 }
