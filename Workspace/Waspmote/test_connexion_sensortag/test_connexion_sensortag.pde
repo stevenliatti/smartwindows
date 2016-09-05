@@ -103,7 +103,6 @@ void loop()
       }
       USB.println();
       USB.println();
-      delay(3000);
       
       /*-----------------------------------*/
       /* CONFIGURATION CAPTEUR TEMPERATURE */
@@ -187,7 +186,6 @@ void loop()
         USB.println(F("Temperature measurement put to sleep"));
         USB.println();
       }   
-      delay(1000);
       
       /*----------------------------------*/
       /* CONFIGURATION CAPTEUR LUMINOSITE */
@@ -274,7 +272,6 @@ void loop()
         USB.println(F("Light intensity measurement put to sleep"));
         USB.println();
       } 
-      delay(1000);
       
       /*-----------------------------------*/
       /*--          DECONNEXION          --*/
@@ -293,7 +290,6 @@ void loop()
     USB.println(F("Intern device not found: "));
   }
   USB.println();
-  delay(3000);
 
   /*-----------------------------------*/
   /*--        CAPTEUR EXTERIEUR      --*/
@@ -340,7 +336,6 @@ void loop()
       }
       USB.println();
       USB.println();
-      delay(3000);
       
       /*-----------------------------------*/
       /* CONFIGURATION CAPTEUR TEMPERATURE */
@@ -424,7 +419,6 @@ void loop()
         USB.println(F("Temperature measurement put to sleep"));
         USB.println();
       }   
-      delay(1000);
       
       /*-----------------------------------*/
       /*--          DECONNEXION          --*/
@@ -444,18 +438,22 @@ void loop()
     USB.println(F("Device not found: "));
   }
   USB.println();
-  delay(3000);
   
   /*-----------------------------------*/
   /*--      LECTURE DES DONNEES      --*/
   /*-----------------------------------*/
   
   USB.println("Received data: ");
+  delay(5000);
   while(serialAvailable(1))
   {
-    USB.println(serialRead(1));
+    if(serialRead(1) == 111 && digitalRead(1) == 0){
+      digitalWrite(1,HIGH);
+    }
+    else if(serialRead(1) == 99 && digitalRead(1) == 1){
+      digitalWrite(1,LOW);
+    }
   }
-  delay(3000);
 }
 
 
