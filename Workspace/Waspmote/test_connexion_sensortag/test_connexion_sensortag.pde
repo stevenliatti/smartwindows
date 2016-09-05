@@ -15,6 +15,9 @@ unsigned char attributeData[] = {1};
 // Variable to count notify events
 uint8_t eventCounter = 0;
 
+// Valeur envoyée au wifly
+char outstr[15];
+
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
 {
@@ -100,7 +103,6 @@ void loop()
       }
       USB.println();
       USB.println();
-      printNewline(1);
       delay(3000);
       
       /*-----------------------------------*/
@@ -154,9 +156,9 @@ void loop()
             USB.print("Intern temperature: ");
             USB.println(tAmb);
             USB.println();
-            printString("Intern Temperature: ",1);
-            printInteger((int)tAmb,1);
-            printNewline(1);
+            dtostrf(tAmb,0, 2, outstr);
+            printString("TI:",1);
+            printString(outstr,1);
 
             eventCounter++;
             flag = 0;
@@ -242,9 +244,9 @@ void loop()
             USB.print("Light Intensity: ");
             USB.println(iLum);
             USB.println();
-            printString("Luminosity: ",1);
-            printInteger((int)iLum,1);
-            printNewline(1);
+            dtostrf(iLum,0, 2, outstr);
+            printString("L:",1);
+            printString(outstr,1);
 
             eventCounter++;
             flag = 0;
@@ -282,7 +284,6 @@ void loop()
       
       BLE.disconnect(BLE.connection_handle);
       USB.println(F("Intern device disconnected."));
-      printString("done",1);
     }
     else
     {
@@ -341,7 +342,6 @@ void loop()
       }
       USB.println();
       USB.println();
-      printNewline(1);
       delay(3000);
       
       /*-----------------------------------*/
@@ -395,9 +395,9 @@ void loop()
             USB.print("Extern temperature: ");
             USB.println(tAmb);
             USB.println();
-            printString("Extern temperature: ",1);
-            printInteger((int)tAmb,1);
-            printNewline(1);
+            dtostrf(tAmb,0, 2, outstr);
+            printString("TE:",1);
+            printString(outstr,1);
 
             eventCounter++;
             flag = 0;
@@ -435,7 +435,7 @@ void loop()
       
       BLE.disconnect(BLE.connection_handle);
       USB.println(F("Disconnected."));
-      printString("done",1);
+      printString("DONE",1);
     }
     else
     {
@@ -448,7 +448,17 @@ void loop()
   }
   USB.println();
   delay(3000);
-
+  
+  /*-----------------------------------*/
+  /*--      LECTURE DES DONNEES      --*/
+  /*-----------------------------------*/
+  
+  USB.println("Received data: ");
+  while(serialAvailable(1))
+  {
+    USB.println(serialRead(1));
+  }
+  delay(3000);
 }
 
 
