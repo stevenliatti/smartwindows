@@ -38,3 +38,12 @@ des tables de data et des users en base de données. L'après-midi, Orphée a r�
 données de deux sensors tag (températures internes et externes). En fin de journée, nous 
 avons enfin réussi à créer un socket server en python, pour lire les données envoyées depuis
 le Wifly.
+
+05.09.2016
+Steven a bricolé avec l'électronique : plusieurs allers-retours au LSN pour récupérer du 
+matériel (bargraph, résistances, etc.) et mettre en place LED et bargraph (ponts ont servi à
+rien).
+Orphée a amélioré le code de la waspmote : moyenne des notifications, ouverture et fermeture
+de la fenêtre (LED).
+Raed a fait un super boulot sur le code python pour récupérer les valeurs et enregistrer en
+base de données.
