@@ -1,5 +1,13 @@
 #include <WaspBLE.h>
 
+// Nombre de leds du bargraph
+const int ledCount = 11;
+
+// Tableau contenant les pins utilisées par le bargraph
+int ledPins[] = {
+  ANA1, ANA2, ANA3, ANA4, ANA5, ANA6, DIGITAL1, 
+  DIGITAL2, DIGITAL3, DIGITAL4 };
+
 // Auxiliary variable
 uint8_t aux_in = 0;
 uint8_t aux_out = 0;
@@ -17,6 +25,14 @@ uint8_t eventCounter = 0;
 
 // Valeur envoyée au wifly
 char outstr[15];
+
+// Nombre de notifications
+int nb_notif = 1;
+
+// Variables contenant les données
+float iLum = 0;
+float TI = 0;
+float TE = 0;
 
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
@@ -43,7 +59,7 @@ float sensorOpt3001Convert(uint16_t rawData)
 
 void setup() 
 {  
-  USB.println(F("BLE_07 Example"));  
+  USB.println(F("SmartWindows"));  
 
   // 0. Turn BLE module ON
   BLE.ON(SOCKET0);
@@ -54,9 +70,15 @@ void setup()
   serialFlush(1);  //clear buffers
   
   // 0.2 Initialisation des pins de sortie
-  pinMode(DIGITAL2, OUTPUT);
-  
-  delay(500);
+  PWR.setSensorPower(SENS_3V3,SENS_ON);
+  pinMode(ANA0, OUTPUT);
+  digitalWrite(ANA0, HIGH); // Inversion des poles -> HIGH = led éteinte
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    pinMode(ledPins[thisLed], OUTPUT);
+  }
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
+  }
 }
 
 void loop() 
@@ -135,9 +157,9 @@ void loop()
          */
         eventCounter = 0;
         unsigned long previous = millis();
-        float tAmb = 0;
+        TI = 0;
         float sum_TI = 0;
-        while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
+        while (( eventCounter < nb_notif ) && ( (millis() - previous) < 30000))
         {
           // 8.1 Wait for indicate event. 
           USB.println(F("Waiting events..."));
@@ -155,11 +177,11 @@ void loop()
 
             // 8.3 Print attribute value
             uint16_t rawAmbTemp = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
-            sensorTmp007Convert(rawAmbTemp, &tAmb);
+            sensorTmp007Convert(rawAmbTemp, &TI);
             USB.print("Intern temperature: ");
-            USB.println(tAmb);
+            USB.println(TI);
             USB.println();
-            sum_TI = sum_TI + tAmb;
+            sum_TI = sum_TI + TI;
             eventCounter++;
             flag = 0;
           }
@@ -178,10 +200,10 @@ void loop()
         } // end while loop
         
         // Calcul de la moyenne des températures
-        tAmb = sum_TI / eventCounter;
+        TI = sum_TI / eventCounter;
         
         // Envoi des données sur le wifly
-        dtostrf(tAmb,0, 2, outstr);
+        dtostrf(TI,0, 2, outstr);
         printString(outstr,1);
       }
       else
@@ -200,7 +222,6 @@ void loop()
       /* CONFIGURATION CAPTEUR LUMINOSITE */
       /*----------------------------------*/      
       
-//      flag = 0;
       attributeData[0] = 1;
       
       // 9 Now remotely write an attribute with the data defined at the beginning.
@@ -227,9 +248,9 @@ void loop()
          
         eventCounter = 0;
         unsigned long previous = millis();
-        float iLum = 0;
+        iLum = 0;
         float sum_L = 0;
-        while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
+        while (( eventCounter < nb_notif ) && ( (millis() - previous) < 30000))
         {
           // 12.1 Wait for indicate event. 
           USB.println(F("Waiting events..."));
@@ -380,9 +401,9 @@ void loop()
          */
         eventCounter = 0;
         unsigned long previous = millis();
-        float tAmb = 0;
+        TE = 0;
         float sum_TE = 0;
-        while (( eventCounter < 5 ) && ( (millis() - previous) < 30000))
+        while (( eventCounter < nb_notif ) && ( (millis() - previous) < 30000))
         {
           // 8.1 Wait for indicate event. 
           USB.println(F("Waiting events..."));
@@ -400,11 +421,11 @@ void loop()
 
             // 8.3 Print attribute value
             uint16_t rawAmbTemp = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
-            sensorTmp007Convert(rawAmbTemp, &tAmb);
+            sensorTmp007Convert(rawAmbTemp, &TE);
             USB.print("Extern temperature: ");
-            USB.println(tAmb);
+            USB.println(TE);
             USB.println();
-            sum_TE = sum_TE + tAmb;
+            sum_TE = sum_TE + TE;
             eventCounter++;
             flag = 0;
           }
@@ -423,10 +444,10 @@ void loop()
         } // end while loop
         
         // Calcul de la moyenne des températures
-        tAmb = sum_TE / eventCounter;
+        TE = sum_TE / eventCounter;
         
         // Envoi des données sur le wifly
-        dtostrf(tAmb,0, 2, outstr);
+        dtostrf(TE,0, 2, outstr);
         printString(outstr,1);
       }
       else
@@ -464,16 +485,26 @@ void loop()
   /*--      LECTURE DES DONNEES      --*/
   /*-----------------------------------*/
   
-  USB.println("Received data: ");
-  USB.println();
+  // Ouverture/fermeture de la fenetre
   while(serialAvailable(1))
   {
-    USB.println(serialRead(1));
-    if(serialRead(1) == 111){
-      digitalWrite(DIGITAL2,HIGH);
+    uint8_t buff = serialRead(1);
+    if(buff == 111){
+      digitalWrite(ANA0,LOW);
     }
-    else if(serialRead(1) == 99 && digitalRead(1) == 1){
-      digitalWrite(DIGITAL2,LOW);
+    else if(buff == 99){
+      digitalWrite(ANA0,HIGH);
+    }
+  }
+  
+  // Ouverture/fermeture des volets
+  int ledLevel = Utils.map(iLum, 0, 150, 0, ledCount);
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    if (thisLed < ledLevel) {
+      digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
+    }
+    else {
+      digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
     }
   }
 }
