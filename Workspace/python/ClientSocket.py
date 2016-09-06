@@ -1,7 +1,7 @@
 import MySQLdb
 import time
 import socket_functions as socket
-
+import used_thread as thread 
 
 #database initialisation function
 def database_open(ip, login, password, database_name):
@@ -33,19 +33,33 @@ time_now = ""
 #principal program
 if __name__ == "__main__":
 
-    ip, port = "192.168.32.241", 2000
-
+    
     while 1:
-        
-        sock = socket.socket_open(ip, port)
-        
-        triple_data = socket.reception_socket(sock, ip, port)
-        
-        
-        socket.socket_close(sock)
-        
-        db = database_open("localhost", "root", "", "smartwindows")
-        insert_data(db, data_array[0], data_array[2], data_array[1], date_now, time_now)
-        database_close(db)
+   ##sock = socket.socket_open(ip, port)
 
-        data_array = []
+        
+        th_action = thread.action_manuelle()
+        th_reception = thread.reception(triple_data)
+
+        data_list.append(triple_data)
+        triple_data = []
+        
+        th_action.start()
+        th_reception.start()
+        
+##        triple_data = socket_m.reception_socket(sock, ip, port)
+        
+        
+
+##        date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
+##        time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
+##        db = database_open("localhost", "root", "", "smartwindows")
+##        insert_data(db, triple_data[0], triple_data[2], triple_data[1])
+##        database_close(db)
+
+        
+        th_reception.join()
+        th_action.join()
+        
+        
+    ##socket.socket_close(sock)
