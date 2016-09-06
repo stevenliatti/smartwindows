@@ -47,3 +47,13 @@ Orphée a amélioré le code de la waspmote : moyenne des notifications, ouvertu
 de la fenêtre (LED).
 Raed a fait un super boulot sur le code python pour récupérer les valeurs et enregistrer en
 base de données.
+
+06.09.2016
+Orphée a fait du super boulot sur l'ouverture des fenêtres et stores (représentés par la led
+et le bargraph). En fin de journée, il a écrit un code qui ouvre les stores selon la 
+luminosité ambiante.
+Raed a continué à bosser sur le socket en python : on utilise les threads pour en parallèle
+lire les données provenant de la waspmote et de l'autre lui communiquer l'ouverture et 
+fermeture des fenêtres.
+Steven a continué la partie électronique : nous avons maintenant un montage fonctionel. Il a
+aidé Raed pour les threads et Orphée pour le code waspmote.
