@@ -57,3 +57,11 @@ lire les données provenant de la waspmote et de l'autre lui communiquer l'ouver
 fermeture des fenêtres.
 Steven a continué la partie électronique : nous avons maintenant un montage fonctionel. Il a
 aidé Raed pour les threads et Orphée pour le code waspmote.
+
+07.09.2016
+Nous avons mis en place l'anémomètre : nous pouvons maintenant avoir la vitesse du vent. Mode
+auto/manuel implémenté. Voir commits d'Orphée du jour.
+Nous avons aussi modifié le code python : il fonctionne maintenant en 2 threads, avec partage 
+de données grâce à une Queue.
+Steven : j'ai commencé à chercher me documenter sur CakePHP et à chercher des solutions 
+javascript pour ploter nos données.
