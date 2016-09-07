@@ -1,12 +1,12 @@
 #include <WaspBLE.h>
 
 // Nombre de leds du bargraph
-const int ledCount = 11;
+const int ledCount = 10;
 
 // Tableau contenant les pins utilisées par le bargraph
 int ledPins[] = {
-  ANA1, ANA2, ANA3, ANA4, ANA5, ANA6, DIGITAL1, 
-  DIGITAL2, DIGITAL3, DIGITAL4 };
+  ANA2, ANA3, ANA4, ANA5, ANA6, DIGITAL1, 
+  DIGITAL2, DIGITAL3, DIGITAL4, DIGITAL5 };
 
 // Auxiliary variable
 uint8_t aux_in = 0;
@@ -33,9 +33,11 @@ int nb_notif = 1;
 float iLum = 0;
 float TI = 0;
 float TE = 0;
+int windLevel = 0;
 
-// Etat du store
-int storeState = 0;
+// Variable d'état des périphériques
+int windowState = 0; // état de la fenetre
+int storeState = 0; // état du store
 
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
@@ -74,8 +76,8 @@ void setup()
   
   // 0.2 Initialisation des pins de sortie
   PWR.setSensorPower(SENS_3V3,SENS_ON);
-  pinMode(ANA0, OUTPUT);
-  digitalWrite(ANA0, HIGH); // Inversion des poles -> HIGH = led éteinte
+  pinMode(ANA1, OUTPUT);
+  digitalWrite(ANA1, HIGH); // Inversion des poles -> HIGH = led éteinte
   for (int thisLed = 0; thisLed < ledCount; thisLed++) {
     pinMode(ledPins[thisLed], OUTPUT);
   }
@@ -471,7 +473,6 @@ void loop()
       
       BLE.disconnect(BLE.connection_handle);
       USB.println(F("Disconnected."));
-      printString("DONE",1);
     }
     else
     {
@@ -487,35 +488,63 @@ void loop()
   /*-----------------------------------*/
   /*--      LECTURE DES DONNEES      --*/
   /*-----------------------------------*/
+ 
+  // Convertion des données de vent en m/s
+  windLevel = analogRead(ANALOG1); 
+  int windSpeed = Utils.map(windLevel, 122, 620, 0, 32);
+  // Envoi de la vitesse du vent
+  printInteger(windSpeed,1);
+
+  // Ouverture/fermeture de la fenetre automatique
+  if (TI >= 25 && windSpeed > 122) {
+    digitalWrite(ANA1, LOW);
+    windowState = 1;
+  }
+  else if (TI >= 25 && TI > TE) {
+    digitalWrite(ANA1, LOW);
+    windowState = 1;
+  }
+  else {
+    digitalWrite(ANA1, HIGH);
+    windowState = 0;
+  }
   
-  // Ouverture/fermeture de la fenetre
-  while(serialAvailable(1))
-  {
+  // Ouverture/fermeture de la fenetre depuis le web
+  while (serialAvailable(1)) {
     uint8_t buff = serialRead(1);
-    if(buff == 111){
-      digitalWrite(ANA0,LOW);
+    if (buff == 111) {
+      digitalWrite(ANA1,LOW);
+      windowState = 1;
     }
-    else if(buff == 99){
-      digitalWrite(ANA0,HIGH);
+    else if (buff == 99) {
+      digitalWrite(ANA1,HIGH);
+      windowState = 0;
     }
   }
   
-  // Ouverture/fermeture des volets
+  // Envoi de l'état de la fenetre
+  printInteger(windowState,1);
+  
+  // Ouverture/fermeture du volet automatique
   if (iLum < 140 && storeState != 10) {
     storeState++;
   }
   if (iLum > 160 && storeState != 0) {
     storeState--;
   }
-  int ledLevel = Utils.map(storeState, 0, 10, 0, ledCount);
-  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
-    if (thisLed < ledLevel) {
+  for (int thisLed = 0; thisLed < storeState; thisLed++) {
+    if (thisLed < storeState) {
       digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
     }
     else {
       digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
     }
   }
+  // Envoi de l'état du store
+  printInteger(storeState,1);
+  
+  // Commande d'arret de la reception des données
+  printString("DONE",1);
 }
 
 
