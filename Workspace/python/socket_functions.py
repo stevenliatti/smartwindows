@@ -11,7 +11,8 @@ def socket_open(ip, port):
         print "Impossible d'ouvrir le socket: {}".format(e)
 
 #socket reception message function
-def reception_socket(sock, ip, port):
+def reception_socket(sock):
+    data_array = []
     try:
         response = sock.recv(4)
         while response != "DONE":
@@ -21,7 +22,7 @@ def reception_socket(sock, ip, port):
             response = sock.recv(1024)
             print format(response)
             data_array.append(response)
-        return data_array, date_now, time_now
+        return data_array
     except Exception as e:
         print "Impossible de recevoir de messages: {}".format(e)
 

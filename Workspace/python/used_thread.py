@@ -48,15 +48,3 @@ class save_data(Thread):
     def __init__(self, triple_data):
         Thread.__init__(self)
         self.triple_data = triple_data
-
-    def run(self):
-        ip = "localhost"
-        username = "root"
-        password = ""
-        database_name = "smartwindows"
-        with verrou:
-            date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
-            time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
-            db = database_open("localhost", "root", "", "smartwindows")
-            insert_data(db, triple_data[0], triple_data[2], triple_data[1])
-            database_close(db)
