@@ -34,6 +34,9 @@ float iLum = 0;
 float TI = 0;
 float TE = 0;
 
+// Etat du store
+int storeState = 0;
+
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
 {
@@ -498,7 +501,13 @@ void loop()
   }
   
   // Ouverture/fermeture des volets
-  int ledLevel = Utils.map(iLum, 0, 150, 0, ledCount);
+  if (iLum < 140 && storeState != 10) {
+    storeState++;
+  }
+  if (iLum > 160 && storeState != 0) {
+    storeState--;
+  }
+  int ledLevel = Utils.map(storeState, 0, 10, 0, ledCount);
   for (int thisLed = 0; thisLed < ledCount; thisLed++) {
     if (thisLed < ledLevel) {
       digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
