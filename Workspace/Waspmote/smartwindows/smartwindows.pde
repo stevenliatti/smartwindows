@@ -1,7 +1,7 @@
 #include <WaspBLE.h>
 
 // Nombre de leds du bargraph
-const int ledCount = 10;
+const int ledCount = 11;
 
 // Tableau contenant les pins utilisées par le bargraph
 int ledPins[] = {
@@ -36,6 +36,8 @@ float TE = 0;
 int windLevel = 0;
 
 // Variable d'état des périphériques
+int choice = -1; // choix de l'utilisateur
+int mode = 0; // mode auto/manuel
 int windowState = 0; // état de la fenetre
 int storeState = 0; // état du store
 
@@ -494,52 +496,85 @@ void loop()
   int windSpeed = Utils.map(windLevel, 122, 620, 0, 32);
   // Envoi de la vitesse du vent
   printInteger(windSpeed,1);
-
-  // Ouverture/fermeture de la fenetre automatique
-  if (TI >= 25 && windSpeed > 122) {
-    digitalWrite(ANA1, LOW);
-    windowState = 1;
-  }
-  else if (TI >= 25 && TI > TE) {
-    digitalWrite(ANA1, LOW);
-    windowState = 1;
-  }
-  else {
-    digitalWrite(ANA1, HIGH);
-    windowState = 0;
-  }
   
-  // Ouverture/fermeture de la fenetre depuis le web
-  while (serialAvailable(1)) {
-    uint8_t buff = serialRead(1);
-    if (buff == 111) {
-      digitalWrite(ANA1,LOW);
+  if (mode == 0) { // mode automatique
+    // Etat de la fenetre en fonction du vent et de la temperature
+    if (TI >= 25 && windSpeed > 122) {
       windowState = 1;
     }
-    else if (buff == 99) {
-      digitalWrite(ANA1,HIGH);
+    else if (TI >= 25 && TI > TE) {
+      windowState = 1;
+    }
+    else {
       windowState = 0;
+    }
+    
+    // Etat du store en fonction de la luminosité
+    if (iLum < 140 && storeState != 10) {
+      storeState++;
+    }
+    if (iLum > 160 && storeState != 0) {
+      storeState--;
+    } 
+    while (serialAvailable(1)) { // check si le mode a changé
+      choice = serialRead(1);
+      if (choice == 109) { // mode manuel
+        mode = 1;
+        Utils.setLED(LED1,LED_ON);
+         break;
+      }
+    }
+  }
+  else { // Monitoring depuis le web
+    while (serialAvailable(1)) {
+      choice = serialRead(1);
+      if (choice == 97) { // mode auto
+        mode = 0;
+        Utils.setLED(LED1,LED_OFF);
+        break;
+      }
+      switch(choice) {
+        case 111 : // ouverture de la fenetre
+          windowState = 1;
+          break;
+        case 99 : // fermeture de la fenetre
+          windowState = 0;
+          break;
+        case 43 : // storeState++
+          storeState++;
+          break;
+        case 45 : // storeState--
+          storeState--;
+          break;
+      }
     }
   }
   
-  // Envoi de l'état de la fenetre
-  printInteger(windowState,1);
+  // Ouverture/fermeture de la fenetre
+  if (windowState == 1) {
+    digitalWrite(ANA1,LOW);
+  }
+  else {
+    digitalWrite(ANA1,HIGH);
+  }
   
-  // Ouverture/fermeture du volet automatique
-  if (iLum < 140 && storeState != 10) {
-    storeState++;
-  }
-  if (iLum > 160 && storeState != 0) {
-    storeState--;
-  }
-  for (int thisLed = 0; thisLed < storeState; thisLed++) {
-    if (thisLed < storeState) {
+  // Ouverture/fermeture du store
+  int ledLevel = Utils.map(storeState, 0, 10, 0, ledCount);
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    if (thisLed < ledLevel) {
       digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
     }
     else {
       digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
     }
   }
+  
+  // Envoi du mode d'utilisation
+  printInteger(mode,1);
+  
+  // Envoi de l'état de la fenetre
+  printInteger(windowState,1);
+  
   // Envoi de l'état du store
   printInteger(storeState,1);
   
