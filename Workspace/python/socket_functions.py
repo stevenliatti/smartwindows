@@ -18,10 +18,10 @@ def reception_socket(sock):
         while response != "DONE":
             response = sock.recv(4)
 
-        for i in range(3):
+        for i in range(7):
             response = sock.recv(1024)
             print format(response)
-            data_array.append(response)
+            data_array.append(float(response))
         return data_array
     except Exception as e:
         print "Impossible de recevoir de messages: {}".format(e)
