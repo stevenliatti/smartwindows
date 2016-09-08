@@ -9,8 +9,8 @@ def database_close(db):
     db.close()
 
 #database data insertion function
-def insert_data(db, temp_int, luminosity, temp_ext, speed, date, time):
-    sql_string = "INSERT INTO data(temp_int, temp_ext, luminosity, wind_speed, date, time) VALUES ('%s','%s','%s','%s','%s', '%s')" % (temp_int, luminosity, temp_ext, speed, date, time)
+def insert_data(db, temp_int, luminosity, temp_ext, wind, date, time):
+    sql_string = "INSERT INTO data(temp_int, temp_ext, luminosity, wind_speed, date, time) VALUES ('%s','%s','%s','%s','%s', '%s')" % (temp_int, luminosity, temp_ext, wind, date, time)
     try:
         # prepare a cursor object using cursor() method
         cursor = db.cursor()

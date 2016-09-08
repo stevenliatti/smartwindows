@@ -12,7 +12,7 @@ class action_manuelle(Thread):
         Thread.__init__(self)
 
     def run(self):
-        ip, port = "192.168.32.241", 2000
+        ip, port = "192.168.178.241", 2000
         with verrou:
             sock = socket.socket_open(ip, port)
             if ((random.randint(1, 60) % 2) == 0):
@@ -34,29 +34,12 @@ class reception(Thread):
         self.data_queue = data_queue
 
     def run(self):
-        ip, port = "192.168.32.241", 2000
+        ip, port = "192.168.178.241", 2000
         
         while True:
-            triple_data = []
+            data_dic = {}
             with verrou:
                 sock = socket.socket_open(ip, port)
-                triple_data = socket.reception_socket(sock)
-                self.data_queue.put(triple_data)
-                print "data_queue"
-                print self.data_queue
+                data_dic = socket.reception_socket(sock)
+                self.data_queue.put(data_dic)
                 socket.socket_close(sock)
-
-#         if (time.clock() - tl >= 30):
-#             tl = time.clock()
-#             date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
-#             time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
-#             to_be_saved = average_data(data_list)
-# ##            db = database_open("localhost", "root", "", "smartwindows")
-# ##            insert_data(db, to_be_saved[0], to_be_saved[2], to_be_saved[1])
-# ##            database_close(db)
-#             data_list = []
-        
-#             attente = 3
-#             attente += random.randint(1, 60) / 100
-#             time.sleep(attente)
-#             sys.stdout.flush()

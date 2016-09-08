@@ -1,8 +1,0 @@
-waspmote + wifly
-http://support.lhings.com/Getting-started-tutorial-with-Waspmote.html
-
-conversion de float à char*
-http://fr.hobbytronics.co.uk/arduino-float-varss
-
-doc anemometre
-https://www.adafruit.com/product/1733

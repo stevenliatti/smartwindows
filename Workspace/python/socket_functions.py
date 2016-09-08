@@ -12,17 +12,29 @@ def socket_open(ip, port):
 
 #socket reception message function
 def reception_socket(sock):
-    data_array = []
+    # declaration du dictionnaire
+    data_dic = {}
     try:
+        ##pour recevoir *HELLO*
+        response = sock.recv(7)
+        ##pour recevoir le DONE
         response = sock.recv(4)
         while response != "DONE":
+            print "dans la boucle : " + response
             response = sock.recv(4)
 
+        ## le message va etre sous la forme "param:valeur"
         for i in range(7):
             response = sock.recv(1024)
             print format(response)
-            data_array.append(float(response))
-        return data_array
+            ## spliter le message dans un tableau a deux case
+            ## 1ere case contient le nom du parametre, 2eme case sa valeur
+            ch = response.split(":")
+            ## enregistrement dans le dictionnaire
+            data_dic[ch[0]] = float(ch[1])
+        print "Affichage de data_dic :"
+        print data_dic
+        return data_dic
     except Exception as e:
         print "Impossible de recevoir de messages: {}".format(e)
 
