@@ -65,3 +65,8 @@ Nous avons aussi modifié le code python : il fonctionne maintenant en 2 threads
 de données grâce à une Queue.
 Steven : j'ai commencé à chercher me documenter sur CakePHP et à chercher des solutions 
 javascript pour ploter nos données.
+
+08.09.2016
+On a continué le code python pour recevoir les données : on réceptionne comme il faut toutes 
+les données, chacune a un identifiant. Il faudra juste revoir l'envoi continu de infos sur le 
+mode et les états. On a configuré le Raspberry aussi, a tester à l'hepia.
