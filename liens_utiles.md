@@ -13,3 +13,5 @@
 [Chart.js Doc](http://www.chartjs.org/docs/)
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+[Exemple LineChart Chart.js](http://bl.ocks.org/tbpgr/304782f57b6f0a0fb8e7)
