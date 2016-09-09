@@ -3,6 +3,8 @@ import time
 import sys
 from threading import Thread, RLock
 import socket_functions as socket
+import ClientSocket as main_file
+import database_functions as db_conn
 
 verrou = RLock()
 
@@ -14,7 +16,6 @@ class action_manuelle(Thread):
         self.port = port
 
     def run(self):
-        print "Lancement du thread d'envoie..."
         with verrou:
             sock = socket.socket_open(self.ip, self.port)
             if ((random.randint(1, 60) % 2) == 0):
@@ -38,11 +39,21 @@ class reception(Thread):
         self.port = port
 
     def run(self):
-        print "Lancement du thread de reception..."
         while True:
             data_dic = {}
             with verrou:
                 sock = socket.socket_open(self.ip, self.port)
                 data_dic = socket.reception_socket(sock)
-                self.data_queue.put(data_dic)
                 socket.socket_close(sock)
+                if len(data_dic) == 7:
+                    self.data_queue.put(data_dic)
+                    main_file.current_M = data_dic["MODE"]
+                    if main_file.current_M == "0" and (main_file.current_WS != data_dic["WINDOW"] or main_file.current_BL != data_dic["BLIND"]):
+                        main_file.current_WS = data_dic["WINDOW"] 
+                        main_file.current_BL = data_dic["BLIND"]
+                        db = db_conn.database_open(main_file.database_ip, main_file.mysql_username, main_file.mysql_password, main_file.database_name)
+                        date_now, time_now = main_file.get_date_time()
+                        ## insertion des donnees dans la base
+                        db_conn.insert_state(db, data_dic["MODE"], data_dic["WINDOW"], data_dic["BLIND"], date_now, time_now, 3)
+                        ## fermeture de la connexion a la base de donnees
+                        db_conn.database_close(db)

@@ -10,7 +10,7 @@ def database_close(db):
 
 #database data insertion function
 def insert_data(db, temp_int, luminosity, temp_ext, wind, date, time):
-    sql_string = "INSERT INTO data(temp_int, temp_ext, luminosity, wind_speed, date, time) VALUES ('%s','%s','%s','%s','%s', '%s')" % (temp_int, luminosity, temp_ext, wind, date, time)
+    sql_string = "INSERT INTO data(temp_int, temp_ext, luminosity, wind_speed, date, time) VALUES ('%s','%s','%s','%s','%s', '%s')" % (temp_int, temp_ext, luminosity, wind, date, time)
     try:
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
@@ -18,5 +18,20 @@ def insert_data(db, temp_int, luminosity, temp_ext, wind, date, time):
         cursor.execute(sql_string)
         # Commit your changes in the database
         db.commit()
+        print "Insertion donnees => OK"
     except Exception as e:
-        print format(e)
+        print "Impossible d'inserrer les donnees : {}".format(e)
+
+#insertion des etats dans la base de donnees
+def insert_state(db, config_mode, window, blind, date, time, users_id):
+    sql_string = "INSERT INTO state(config_mode, window, blind, date, time, users_id) VALUES ('%s','%s','%s','%s','%s', '%s')" % (config_mode, window, blind, date, time, users_id)
+    try:
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
+        # Execute the SQL command
+        cursor.execute(sql_string)
+        # Commit your changes in the database
+        db.commit()
+        print "Insertion etat => OK"
+    except Exception as e:
+        print "Impossible d'inserrer les etat : {}".format(e)
