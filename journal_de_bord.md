@@ -70,3 +70,11 @@ javascript pour ploter nos données.
 On a continué le code python pour recevoir les données : on réceptionne comme il faut toutes 
 les données, chacune a un identifiant. Il faudra juste revoir l'envoi continu de infos sur le 
 mode et les états. On a configuré le Raspberry aussi, a tester à l'hepia.
+
+#### 09.09.2016
+On a créé une table d'état en base de données + relation tables + amélioration structure 
+tables. Ajout d'une fonction en python pour sauvegarder les états en base de données. 
+On a configuré le Raspberry Pi, le serveur python et MySQL fonctionnent.
+On commencé à prendre en main Chart.js pour les graphiques en javascript.
+Début de lecture de tutos sur KiCad pour réaliser les schémas électriques du système pour
+le rapport.
