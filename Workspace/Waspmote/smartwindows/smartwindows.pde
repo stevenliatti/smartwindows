@@ -1,5 +1,12 @@
 #include <WaspBLE.h>
 
+#define OPEN_WINDOW 111
+#define CLOSE_WINDOW 99
+#define AUTO 97
+#define MANUAL 109
+#define OPEN_BLIND 43
+#define CLOSE_BLIND 45
+
 // Nombre de leds du bargraph
 const int ledCount = 11;
 
@@ -498,13 +505,11 @@ void loop()
   windLevel = analogRead(ANALOG1); 
   int windSpeed = Utils.map(windLevel, 122, 620, 0, 32);
   // Envoi de la vitesse du vent
-  USB.println("WindSpeed : ********************************************");
-  USB.println(windSpeed);
   printString("WIND:",1);
   printInteger(windSpeed,1);
   delay(100);
   
-  if (mode_config== 0) { // mode automatique
+  if (mode_config == 0) { // mode automatique
     // Etat de la fenetre en fonction du vent et de la temperature
     if (TI >= 25 && windSpeed > 122) {
       windowState = 1;
@@ -525,8 +530,8 @@ void loop()
     } 
     while (serialAvailable(1)) { // check si le mode a changé
       choice = serialRead(1);
-      if (choice == 109) { // mode manuel
-        mode_config= 1;
+      if (choice == MANUAL) { // mode manuel
+        mode_config = 1;
         Utils.setLED(LED1,LED_ON);
          break;
       }
@@ -535,22 +540,22 @@ void loop()
   else { // Monitoring depuis le web
     while (serialAvailable(1)) {
       choice = serialRead(1);
-      if (choice == 97) { // mode auto
-        mode_config= 0;
+      if (choice == AUTO) { // mode auto
+        mode_config = 0;
         Utils.setLED(LED1,LED_OFF);
         break;
       }
       switch(choice) {
-        case 111 : // ouverture de la fenetre
+        case OPEN_WINDOW : // ouverture de la fenetre
           windowState = 1;
           break;
-        case 99 : // fermeture de la fenetre
+        case CLOSE_WINDOW : // fermeture de la fenetre
           windowState = 0;
           break;
-        case 43 : // storeState++
+        case OPEN_BLIND : // storeState++
           storeState++;
           break;
-        case 45 : // storeState--
+        case CLOSE_BLIND : // storeState--
           storeState--;
           break;
       }
