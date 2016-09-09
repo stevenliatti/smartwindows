@@ -2,12 +2,15 @@
 
 #define MAC_IN "b0b448c99d00"
 #define MAC_OUT "b0b448c99803"
+
 #define OPEN_WINDOW 111
 #define CLOSE_WINDOW 99
 #define AUTO 97
 #define MANUAL 109
 #define OPEN_BLIND 43
 #define CLOSE_BLIND 45
+
+#define DELAY 100
 
 // Nombre de leds du bargraph
 const int ledCount = 10;
@@ -506,7 +509,7 @@ void loop()
   printString("WIND:",1);
   Utils.long2array(windSpeed,outstr);
   printString(outstr,1);
-  delay(100);
+  delay(DELAY);
   
   if (mode_config == 0) { // mode automatique
     // Etat de la fenetre en fonction du vent et de la temperature
@@ -584,19 +587,19 @@ void loop()
   Utils.long2array(mode_config,outstr);
   printString("MODE:",1);
   printString(outstr,1);
-  delay(100);
+  delay(DELAY);
   
   // Envoi de l'état de la fenetre
   Utils.long2array(windowState,outstr);
   printString("WINDOW:",1);
   printString(outstr,1);
-  delay(100);
+  delay(DELAY);
   
   // Envoi de l'état du store
   Utils.long2array(blindState,outstr);
   printString("BLIND:",1);
   printString(outstr,1);
-  delay(100);
+  delay(DELAY);
   
   // Commande d'arret de la reception des données
   printString("DONE",1);
