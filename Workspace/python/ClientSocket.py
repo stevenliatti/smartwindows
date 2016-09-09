@@ -5,7 +5,7 @@ import Queue
 import database_functions as db_conn
 
 ############################################
-## fonctions utilisées                    ##
+## fonctions utilisees                    ##
 ############################################
 
 def average_data():
@@ -56,16 +56,16 @@ if __name__ == "__main__":
                 th_reception.start()
 
                 if not data_queue.empty():
-                        ## récupération de la date et du temps
+                        ## recuperation de la date et du temps
                         date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
                         time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
-                        ## calcul de la moyenne des données
+                        ## calcul de la moyenne des donnees
                         to_be_saved = average_data()
-                        ## connection à la base de données
+                        ## connection a la base de donnees
                         db = db_conn.database_open(database_ip, mysql_username, mysql_password, database_name)
-                        ## insertion des données dans la base
+                        ## insertion des donnees dans la base
                         db_conn.insert_data(db, to_be_saved["TI"], to_be_saved["L"], to_be_saved["TE"], to_be_saved["WIND"], date_now, time_now)
-                        ## fermeture de la connexion à la base de données
+                        ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
                 time.sleep(5)
 
