@@ -1,5 +1,7 @@
 #include <WaspBLE.h>
 
+#define MAC_IN "b0b448c99d00"
+#define MAC_OUT "b0b448c99803"
 #define OPEN_WINDOW 111
 #define CLOSE_WINDOW 99
 #define AUTO 97
@@ -8,7 +10,7 @@
 #define CLOSE_BLIND 45
 
 // Nombre de leds du bargraph
-const int ledCount = 11;
+const int ledCount = 10;
 
 // Tableau contenant les pins utilisées par le bargraph
 int ledPins[] = {
@@ -19,10 +21,6 @@ int ledPins[] = {
 uint8_t aux_in = 0;
 uint8_t aux_out = 0;
 uint16_t flag = 0;
-
-// MAC address of BLE device to find and connect.
-char MAC_in[14] = "b0b448c99d00";
-char MAC_out[14] = "b0b448c99803";
 
 //char attributeData[20] = "att 1.0 written";
 unsigned char attributeData[] = {1};
@@ -37,16 +35,16 @@ char outstr[15];
 int nb_notif = 1;
 
 // Variables contenant les données
-float iLum = 0;
+float lightIntensity = 0;
 float TI = 0;
 float TE = 0;
 int windLevel = 0;
 
-// Variable d'état des périphériques
+// Variables d'état
 int choice = -1; // choix de l'utilisateur
 int mode_config = 0; // mode auto/manuel
 int windowState = 0; // état de la fenetre
-int storeState = 0; // état du store
+int blindState = 0; // état du store
 
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
@@ -105,12 +103,12 @@ void loop()
   // 1. Look for a specific device
   USB.println(F("First scan for intern device"));  
   USB.print("Look for intern device: ");
-  USB.println(MAC_in);
-  if (BLE.scanDevice(MAC_in) == 1)
+  USB.println(MAC_IN);
+  if (BLE.scanDevice(MAC_IN) == 1)
   {
     //2. now try to connect with the defined parameters.
     USB.println(F("Intern device found. Connecting... "));
-    aux_in = BLE.connectDirect(MAC_in);
+    aux_in = BLE.connectDirect(MAC_IN);
 
     if (aux_in == 1) 
     {
@@ -263,7 +261,7 @@ void loop()
          
         eventCounter = 0;
         unsigned long previous = millis();
-        iLum = 0;
+        lightIntensity = 0;
         float sum_L = 0;
         while (( eventCounter < nb_notif ) && ( (millis() - previous) < 30000))
         {
@@ -283,11 +281,11 @@ void loop()
 
             // 12.3 Print attribute value
             uint16_t rawData = ((uint16_t)BLE.event[10] << 8) | BLE.event[9];
-            iLum = sensorOpt3001Convert(rawData);
+            lightIntensity = sensorOpt3001Convert(rawData);
             USB.print("Light Intensity: ");
-            USB.println(iLum);
+            USB.println(lightIntensity);
             USB.println();
-            sum_L = sum_L + iLum;
+            sum_L = sum_L + lightIntensity;
             eventCounter++;
             flag = 0;
           }
@@ -306,10 +304,10 @@ void loop()
         } // end while loop
         
         // Calcul de la moyenne de luminosité
-        iLum = sum_L / eventCounter;
+        lightIntensity = sum_L / eventCounter;
         
         // Envoi des données sur le wifly
-        dtostrf(iLum,0, 2, outstr);
+        dtostrf(lightIntensity,0, 2, outstr);
         printString("L:",1);
         printString(outstr,1);
       }
@@ -351,12 +349,12 @@ void loop()
   // 1. Look for a specific device
   USB.println(F("First scan for extern device"));  
   USB.print("Look for extern device: ");
-  USB.println(MAC_out);
-  if (BLE.scanDevice(MAC_out) == 1)
+  USB.println(MAC_OUT);
+  if (BLE.scanDevice(MAC_OUT) == 1)
   {
     //2. now try to connect with the defined parameters.
     USB.println(F("Extern device found. Connecting... "));
-    aux_out = BLE.connectDirect(MAC_out);
+    aux_out = BLE.connectDirect(MAC_OUT);
 
     if (aux_out == 1) 
     {
@@ -506,7 +504,8 @@ void loop()
   int windSpeed = Utils.map(windLevel, 122, 620, 0, 32);
   // Envoi de la vitesse du vent
   printString("WIND:",1);
-  printInteger(windSpeed,1);
+  Utils.long2array(windSpeed,outstr);
+  printString(outstr,1);
   delay(100);
   
   if (mode_config == 0) { // mode automatique
@@ -522,11 +521,11 @@ void loop()
     }
     
     // Etat du store en fonction de la luminosité
-    if (iLum < 140 && storeState != 10) {
-      storeState++;
+    if (lightIntensity < 140 && blindState != 10) {
+      blindState++;
     }
-    if (iLum > 160 && storeState != 0) {
-      storeState--;
+    if (lightIntensity > 160 && blindState != 0) {
+      blindState--;
     } 
     while (serialAvailable(1)) { // check si le mode a changé
       choice = serialRead(1);
@@ -552,11 +551,11 @@ void loop()
         case CLOSE_WINDOW : // fermeture de la fenetre
           windowState = 0;
           break;
-        case OPEN_BLIND : // storeState++
-          storeState++;
+        case OPEN_BLIND : // blindState++
+          blindState++;
           break;
-        case CLOSE_BLIND : // storeState--
-          storeState--;
+        case CLOSE_BLIND : // blindState--
+          blindState--;
           break;
       }
     }
@@ -571,7 +570,7 @@ void loop()
   }
   
   // Ouverture/fermeture du store
-  int ledLevel = Utils.map(storeState, 0, 10, 0, ledCount);
+  int ledLevel = Utils.map(blindState, 0, 10, 0, ledCount);
   for (int thisLed = 0; thisLed < ledCount; thisLed++) {
     if (thisLed < ledLevel) {
       digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
@@ -582,18 +581,21 @@ void loop()
   }
   
   // Envoi du mode d'utilisation
+  Utils.long2array(mode_config,outstr);
   printString("MODE:",1);
-  printInteger(mode_config,1);
+  printString(outstr,1);
   delay(100);
   
   // Envoi de l'état de la fenetre
+  Utils.long2array(windowState,outstr);
   printString("WINDOW:",1);
-  printInteger(windowState,1);
+  printString(outstr,1);
   delay(100);
   
   // Envoi de l'état du store
-  printString("STORE:",1);
-  printInteger(storeState,1);
+  Utils.long2array(blindState,outstr);
+  printString("BLIND:",1);
+  printString(outstr,1);
   delay(100);
   
   // Commande d'arret de la reception des données
