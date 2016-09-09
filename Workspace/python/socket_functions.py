@@ -1,18 +1,19 @@
 import socket
 
-#socket connection
+## socket connection
 def socket_open(ip, port):
+    print "Ouverture du socket..."
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((ip, port))
-        print "Ouverture du socket"
+        print "Socket ==> ouvert"
         return sock
     except Exception as e:
         print "Impossible d'ouvrir le socket: {}".format(e)
 
-#socket reception message function
+## socket reception message function
 def reception_socket(sock):
-    # declaration du dictionnaire
+    ## declaration du dictionnaire
     data_dic = {}
     try:
         ##pour recevoir *HELLO*
@@ -23,6 +24,7 @@ def reception_socket(sock):
             print "dans la boucle : " + response
             response = sock.recv(4)
 
+        print "Debut de la reception..."
         ## le message va etre sous la forme "param:valeur"
         for i in range(7):
             response = sock.recv(1024)
@@ -32,19 +34,19 @@ def reception_socket(sock):
             ch = response.split(":")
             ## enregistrement dans le dictionnaire
             data_dic[ch[0]] = float(ch[1])
-        print "Affichage de data_dic :"
+        print "Affichage des donnee :"
         print data_dic
         return data_dic
     except Exception as e:
         print "Impossible de recevoir de messages: {}".format(e)
 
-#socket send message function
+## socket send message function
 def send_socket(sock, msg):
     try:
         sock.send(msg);
     except Exception as e:
         print "Impossible d'envoyer de messages: {}".format(e)
 
-#socket close
+## socket close
 def socket_close(sock):
     sock.close()

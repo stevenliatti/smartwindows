@@ -4,6 +4,10 @@ import used_thread as thread
 import Queue
 import database_functions as db_conn
 
+############################################
+## fonctions utilisées                    ##
+############################################
+
 def average_data():
         returned_dic = {}
         somme_tempext = 0.0
@@ -26,71 +30,44 @@ def average_data():
 
         return returned_dic
 
+############################################
+## initialisation des variables globales  ##
+############################################
 
 data_queue = Queue.Queue()
 
-#principal program
+database_ip = "localhost"
+mysql_username = "root"
+mysql_password = ""
+database_name = "smartwindows"
+
+socket_ip = "192.168.32.241"
+socket_port = 2000
+
+############################################
+## programme principal                    ##
+############################################
+
 if __name__ == "__main__":
 
-        ip = "localhost"
-        username = "root"
-        password = ""
-        database_name = "smartwindows"
-
         while 1:
-                th_reception = thread.reception(data_queue)
+                ## lancement des threads
+                th_reception = thread.reception(socket_ip, socket_port, data_queue)
                 th_reception.start()
 
                 if not data_queue.empty():
-                        print "enregistrement bd"
+                        ## récupération de la date et du temps
                         date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
                         time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
+                        ## calcul de la moyenne des données
                         to_be_saved = average_data()
-                        db = db_conn.database_open("localhost", "root", "", "smartwindows")
+                        ## connection à la base de données
+                        db = db_conn.database_open(database_ip, mysql_username, mysql_password, database_name)
+                        ## insertion des données dans la base
                         db_conn.insert_data(db, to_be_saved["TI"], to_be_saved["L"], to_be_saved["TE"], to_be_saved["WIND"], date_now, time_now)
+                        ## fermeture de la connexion à la base de données
                         db_conn.database_close(db)
                 time.sleep(5)
 
-
-
-
-
-
-
-
-
-
-
-##sock = socket.socket_open(ip, port)
-
-##        th_action = thread.action_manuelle()
-##        th_reception = thread.reception()
-
-##        th_action.start()
-##        th_reception.start()
-
-##        triple = th_reception.triple_data
-##        print "main : triple : "
-##        print triple
-
-##        data_list.append(triple_data)
-##
-##        if (time.clock() - tl >= 30):
-##            tl = time.clock()
-##            date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
-##            time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
-##            to_be_saved = average_data(data_list)
-####            db = database_open("localhost", "root", "", "smartwindows")
-####            insert_data(db, to_be_saved[0], to_be_saved[2], to_be_saved[1])
-####            database_close(db)
-##            data_list = []
-##        
-##        triple_data = []
-##        
-
-##        triple_data = socket_m.reception_socket(sock, ip, port)
-
-
-##socket.socket_close(sock)
 
 
