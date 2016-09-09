@@ -4,6 +4,12 @@ import used_thread as thread
 import Queue
 import database_functions as db_conn
 
+## recuperation de la date et du temps
+def get_date_time():
+        date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
+        time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
+        return date_now, time_now
+
 ############################################
 ## fonctions utilisees                    ##
 ############################################
@@ -44,6 +50,16 @@ database_name = "smartwindows"
 socket_ip = "192.168.32.241"
 socket_port = 2000
 
+## pour le mode : 0 => automatique, 1 => manuel
+## current_M => mode en cours
+current_M = "0"  
+## pour la fenetre : 0 => fermee, 1 => ouverte
+## current_WS => etat courant de la fenetre
+current_WS = "0" 
+## pour le niveau de store : une valeur de 0 a 10 (0 pour ferme totalement, 10 pour ouvert totalement)
+## current_BL => etat courant du store
+current_BL = "0"
+
 ############################################
 ## programme principal                    ##
 ############################################
@@ -51,14 +67,13 @@ socket_port = 2000
 if __name__ == "__main__":
 
         while 1:
+
                 ## lancement des threads
                 th_reception = thread.reception(socket_ip, socket_port, data_queue)
                 th_reception.start()
 
                 if not data_queue.empty():
-                        ## recuperation de la date et du temps
-                        date_now = "%d-%d-%d" % (time.localtime().tm_year,time.localtime().tm_mon,time.localtime().tm_mday)
-                        time_now = "%d:%d:%d" % (time.localtime().tm_hour,time.localtime().tm_min,time.localtime().tm_sec)
+                        date_now, time_now = get_date_time()
                         ## calcul de la moyenne des donnees
                         to_be_saved = average_data()
                         ## connection a la base de donnees
@@ -67,7 +82,7 @@ if __name__ == "__main__":
                         db_conn.insert_data(db, to_be_saved["TI"], to_be_saved["L"], to_be_saved["TE"], to_be_saved["WIND"], date_now, time_now)
                         ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
-                time.sleep(5)
+                time.sleep(15)
 
 
 
