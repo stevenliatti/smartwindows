@@ -70,7 +70,9 @@ if __name__ == "__main__":
 
                 ## lancement des threads
                 th_reception = thread.reception(socket_ip, socket_port, data_queue)
-                th_reception.start()
+                th = thread.reception_web(socket_ip, socket_port)
+                # th_reception.start()
+                # th.start()
 
                 if not data_queue.empty():
                         date_now, time_now = get_date_time()
