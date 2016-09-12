@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Test Ajax 3</title>
+</head>
+<body>
+	<h2>Test Ajax 3</h2>
+
+	<p>Mode : <br>
+		<input type="radio" name="mode" value="a" id="auto"> Automatique <br>
+		<input type="radio" name="mode" value="m" id="manual"> Manuel
+	</p>
+
+	<p id="state_window">La fenêtre est : <br>
+		<input type="radio" name="window" value="o" id="open"> ouverte <br>
+		<input type="radio" name="window" value="c" id="close"> fermée
+	</p>
+
+	<p> Le store est à ce niveau : <br>
+		<input id="slide" type="range" min="0" max="10" value="0" step="1" onchange="sliderValue(this.value)" />
+		<span id="range">0</span>
+	</p>
+
+	<input type="button" onclick="urlConstruct()" id="send_data" value="Valider">
+
+	<p id="test">test</p>
+
+	<script>
+	function loadDoc(url, cfunc) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				cfunc(this);
+			}
+		};
+
+		xhttp.open("GET", url, true);
+		xhttp.send();
+	}
+
+	function ajaxResponse(xhttp) {
+		var response = JSON.parse(xhttp.responseText);
+		// document.getElementById("window_button").value = response[0];
+		// document.getElementById("state_window").innerHTML = response[1];
+		document.getElementById("test").innerHTML = response[0] + response[1] + response[2];
+	}
+
+	function sliderValue(value) {
+		document.getElementById("range").innerHTML = value;
+	}
+
+	function urlConstruct() {
+		var url = "server.php?mode=" + document.querySelector('input[name="mode"]:checked').value +
+		"&windowState=" + document.querySelector('input[name="window"]:checked').value + 
+		"&blindState=" + document.getElementById("slide").value;
+		loadDoc(url, ajaxResponse);
+	}
+	
+	</script>
+</body>
+</html>

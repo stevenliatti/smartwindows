@@ -78,3 +78,9 @@ On a configuré le Raspberry Pi, le serveur python et MySQL fonctionnent.
 On commencé à prendre en main Chart.js pour les graphiques en javascript.
 Début de lecture de tutos sur KiCad pour réaliser les schémas électriques du système pour
 le rapport.
+
+#### 12.09.2016
+On a mis en place une page Ajax pour envoyer des contrôles à la waspmote (test_ajax).
+On a fait la liaison python-waspmote pour modifier les états et la configuration. Nous 
+avons adapté le code de la waspmote pour recevoir ces commandes. On a réalisé le schéma 
+électrique avec KiCad. On a récupéré et ploté des données avec Chart.js.

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Test Ajax 2</title>
+</head>
+<body>
+	<h2>Test Ajax 2</h2>
+
+	<input type="button" onclick="urlConstruct()" id="window_button" value="open">
+
+	<p id="state_window">La fenêtre est fermée</p>
+
+	<input id="slide" type="range" min="0" max="10" value="0" step="1" onchange="sliderValue(this.value)" />
+	<span id="range">0</span>
+
+	<script>
+	function loadDoc(url, cfunc) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				cfunc(this);
+			}
+		};
+
+		xhttp.open("GET", url, true);
+		xhttp.send();
+	}
+
+	function ajaxWindow(xhttp) {
+		var response = JSON.parse(xhttp.responseText);
+		document.getElementById("window_button").value = response[0];
+		document.getElementById("state_window").innerHTML = response[1];
+	}
+
+	function sliderValue(value) {
+		document.getElementById("range").innerHTML = value;
+	}
+
+	function urlConstruct() {
+		var url = "server.php?windowState=" + document.getElementById("window_button").value + "&blindState=" + document.getElementById("slide").value;
+		loadDoc(url, ajaxWindow);
+	}
+	
+	</script>
+</body>
+</html>

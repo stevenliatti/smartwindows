@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Test Ajax</title>
+</head>
+<body>
+	<h2>Test Ajax</h2>
+
+	<input type="button" onclick="loadDoc()" id="window_button" value="open">
+
+	<p id="state_window">La fenêtre est fermée</p>
+
+	<script>
+	function loadDoc() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var your_data = JSON.parse(this.responseText);
+				document.getElementById("window_button").value = your_data[0];
+				document.getElementById("state_window").innerHTML = your_data[1];
+			}
+		};
+		var openWindow;
+		if (document.getElementById("window_button").value == "open")
+			openWindow = "open";
+		else
+			openWindow = "close";
+		
+		var request = "server.php?state=" + openWindow;
+		xhttp.open("GET", request, true);
+		xhttp.send();
+	}
+	</script>
+</body>
+</html>
