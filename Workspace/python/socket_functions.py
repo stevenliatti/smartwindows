@@ -22,15 +22,15 @@ def reception_socket(sock):
         print "Wifly : Donnees inutiles :"
         response = sock.recv(4)
         while response != "DONE":
-            print response
             response = sock.recv(4)
+            print response
 
         print "Wifly : Debut de la reception..."
         ## le message va etre sous la forme "param:valeur"
         for i in range(4):
             response = sock.recv(1024)
             print format(response)
-            ## spliter le message dans un tableau a deux case
+            ## spliter le message dans un tableau a deux cases
             ## 1ere case contient le nom du parametre, 2eme case sa valeur
             ch = response.split(":")
             ## enregistrement dans le dictionnaire
@@ -56,7 +56,7 @@ def reception_socket(sock):
 def send_socket(sock, msg):
     print "Wifly : Envoie des donnees :\n" + msg
     try:
-        sock.send(msg);
+        sock.send(msg)
     except Exception as e:
         print "Wifly : Impossible d'envoyer de messages: {}".format(e)
 

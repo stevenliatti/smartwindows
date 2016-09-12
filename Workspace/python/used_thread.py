@@ -30,6 +30,7 @@ class action_manuelle(Thread):
             time.sleep(attente)
             socket.socket_close(sock)
 
+## thread pour la reception des donnees de la carte waspmote et les enregistrer l'etat dans la base
 class reception(Thread):
     
     def __init__(self, ip, port, data_queue):
@@ -57,3 +58,41 @@ class reception(Thread):
                         db_conn.insert_state(db, data_dic["MODE"], data_dic["WINDOW"], data_dic["BLIND"], date_now, time_now, 3)
                         ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
+                else:
+                    print "Donnees refuees!!!"
+
+## thread pour la reception des nouvelles configurations venant de l'application web
+## et les envoyer a la carte waspmote
+class reception_web(Thread):
+
+    def __init__(self, ip, port):
+        Thread.__init__(self)
+        self.ip = ip
+        self.port = port
+
+    def run(self):
+        while 1:
+            pass
+            with verrou:
+                sock = socket.socket_open(self.ip, self.port)
+                config = sock.recv(1024)
+                ## spliter le message dans un tableau a 3 cases
+                ## 1ere case contient le mode : "a" pour auto et "m" pour manuel
+                ## 2eme case l'etat de la fenetre : "o" pour ouvrir et "c" pour fermer
+                ## 3eme case l'etat du store : un chiffre de "0", "1", "2", ..., "9", "t" ("t" pour 10)
+                # ch = response.split(":")
+                # sock.send(ch[0])
+                # if (ch[0] == "m"):
+                #     sock.send(ch[1])
+                #     sock.send(ch[2])
+                sock.send("m")
+                sock.send("o")
+                sock.send("t")
+
+                time.sleep(20)
+                sock.send("c")
+                sock.send("0")
+
+                time.sleep(20)
+
+                socket.socket_close(sock)
