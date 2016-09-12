@@ -7,8 +7,17 @@
 #define CLOSE_WINDOW 99
 #define AUTO 97
 #define MANUAL 109
-#define OPEN_BLIND 43
-#define CLOSE_BLIND 45
+#define BLIND_STATE_0 48
+#define BLIND_STATE_1 49
+#define BLIND_STATE_2 50
+#define BLIND_STATE_3 51
+#define BLIND_STATE_4 52
+#define BLIND_STATE_5 53
+#define BLIND_STATE_6 54
+#define BLIND_STATE_7 55
+#define BLIND_STATE_8 56
+#define BLIND_STATE_9 57
+#define BLIND_STATE_10 58
 
 #define DELAY 100
 
@@ -48,6 +57,7 @@ int choice = -1; // choix de l'utilisateur
 int mode_config = 0; // mode auto/manuel
 int windowState = 0; // état de la fenetre
 int blindState = 0; // état du store
+int last_blindState = 0; // état passé du store
 
 // Convertisseur température
 void sensorTmp007Convert(uint16_t rawAmbTemp, float *tAmb)
@@ -523,6 +533,7 @@ void loop()
       windowState = 0;
     }
     
+    last_blindState = blindState;
     // Etat du store en fonction de la luminosité
     if (lightIntensity < 140 && blindState != 10) {
       blindState++;
@@ -535,11 +546,11 @@ void loop()
       if (choice == MANUAL) { // mode manuel
         mode_config = 1;
         Utils.setLED(LED1,LED_ON);
-         break;
+        break;
       }
     }
   }
-  else { // Monitoring depuis le web
+  if (mode_config == 1) { // Monitoring depuis le web
     while (serialAvailable(1)) {
       choice = serialRead(1);
       if (choice == AUTO) { // mode auto
@@ -554,12 +565,37 @@ void loop()
         case CLOSE_WINDOW : // fermeture de la fenetre
           windowState = 0;
           break;
-        case OPEN_BLIND : // blindState++
-          blindState++;
+        case BLIND_STATE_0 :
+          blindState = 0;
           break;
-        case CLOSE_BLIND : // blindState--
-          blindState--;
+        case BLIND_STATE_1 :
+          blindState = 1;
           break;
+        case BLIND_STATE_2 :
+          blindState = 2;
+          break;
+        case BLIND_STATE_3 :
+          blindState = 3;
+          break;
+        case BLIND_STATE_4 :
+          blindState = 4;
+          break;
+        case BLIND_STATE_5 :
+          blindState = 5;
+          break;
+        case BLIND_STATE_6 :
+          blindState = 6;
+          break;
+        case BLIND_STATE_7 : 
+          blindState = 7;
+        case BLIND_STATE_8 :
+          blindState = 8;
+          break;
+        case BLIND_STATE_9 : 
+          blindState = 9;
+          break;
+        case BLIND_STATE_10 :
+          blindState = 10;
       }
     }
   }
@@ -573,13 +609,31 @@ void loop()
   }
   
   // Ouverture/fermeture du store
-  int ledLevel = Utils.map(blindState, 0, 10, 0, ledCount);
-  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
-    if (thisLed < ledLevel) {
-      digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
+//  int ledLevel = Utils.map(blindState, 0, 10, 0, ledCount);
+  if (blindState > last_blindState) {
+    for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+      if (thisLed < blindState) {
+        digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
+      }
+      else {
+        digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
+      }
+      if (mode_config == 1 && blindState != last_blindState) {
+        delay(1000);
+      }
     }
-    else {
-      digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
+  }
+  else {
+    for (int thisLed = ledCount - 1; thisLed >= 0; thisLed--) {
+      if (thisLed < blindState) {
+        digitalWrite(ledPins[thisLed], LOW); // Inversion des poles -> LOW = led allumée
+      }
+      else {
+        digitalWrite(ledPins[thisLed], HIGH); // Inversion des poles -> HIGH = led éteinte
+      }
+      if (mode_config == 1 && blindState != last_blindState) {
+        delay(1000);
+      }
     }
   }
   
