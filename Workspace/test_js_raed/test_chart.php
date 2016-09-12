@@ -13,16 +13,19 @@
     define("DATABASE_NAME", "smartwindows");
 
     $db = database_open(DATABASE_IP, USER, PASWORD, DATABASE_NAME);
-    $data_array = data_select($db);
+    $data_array = day_data_select($db, "2016-09-09");
 
     $temp_int_array = [];
+    $luminosity_array = [];
+    $temp_ext_array = [];
     $date_array = [];
     $time_array = [];
     for ($i=0; $i < count($data_array); $i++) { 
         $temp_int_array[$i] = $data_array[$i]["temp_int"];
+        $luminosity_array[$i] = $data_array[$i]["luminosity"];
+        $temp_ext_array[$i] = $data_array[$i]["temp_ext"];
         $date_array[$i] = $data_array[$i]["date"] ." à " . $data_array[$i]["time"];
     }
-    echo json_encode($data_array);
     database_close($db);
 ?>
 
@@ -34,15 +37,74 @@
         <script type="text/javascript" src="Chart.bundle.js"></script>
     </head>
     <body>
-        <canvas id="myChart" width="1000" height="400"></canvas>
+    	<table>
+    		<tr>
+    			<td>
+		        	<canvas id="myChart" width="500" height="400"></canvas>
+		        </td>
+		        <td>
+		        	<canvas id="myChart2" width="500" height="400"></canvas>
+		        </td>
+    		</tr>
+        </table>
         <script>
-        var db_data = <?php echo json_encode($data_array) ?>;
         var data = {
             labels: <?php echo '["' . implode('", "', $date_array) . '"]' ?>,
             datasets: [
                 {
                     label: "Température interne",
-                    fill: true,
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(75,192,0,0.4)",
+                    borderColor: "rgba(75,192,0,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderWidth: 2,
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,0,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 5,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,0,1)",
+                    pointHoverBorderColor: "black",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: <?php echo '["' . implode('", "', $temp_int_array) . '"]' ?>,
+                    spanGaps: false,
+                },
+                {
+                	label: "Température externe",
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(255,0,192,0.4)",
+                    borderColor: "rgba(255,0,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderWidth: 2,
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(255,0,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 5,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(255,0,192,1)",
+                    pointHoverBorderColor: "black",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: <?php echo '["' . implode('", "', $temp_ext_array) . '"]' ?>,
+                    spanGaps: false,
+                }
+            ]
+        };
+        var data2 = {
+            labels: <?php echo '["' . implode('", "', $date_array) . '"]' ?>,
+            datasets: [
+                {
+                	label: "Luminosité",
+                    fill: false,
                     lineTension: 0,
                     backgroundColor: "rgba(75,192,192,0.4)",
                     borderColor: "rgba(75,192,192,1)",
@@ -56,11 +118,11 @@
                     pointBorderWidth: 5,
                     pointHoverRadius: 5,
                     pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderColor: "black",
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: <?php echo '["' . implode('", "', $temp_int_array) . '"]' ?>,
+                    data: <?php echo '["' . implode('", "', $luminosity_array) . '"]' ?>,
                     spanGaps: false,
                 }
             ]
@@ -69,6 +131,21 @@
         var myChart = new Chart(ctx, {
             type: 'line',
             data: data,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                },
+                responsive:false
+            }
+        });
+        var ctx2 = document.getElementById("myChart2");
+        var myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: data2,
             options: {
                 scales: {
                     yAxes: [{

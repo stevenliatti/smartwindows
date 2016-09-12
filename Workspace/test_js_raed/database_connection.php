@@ -15,14 +15,13 @@
         mysqli_close($conn);
     }
 
-    //selection de la table data
-    function data_select($conn)
+    //selection des données par jour
+    function day_data_select($conn, $day)
     {
-        $sql = "SELECT * FROM data ORDER BY date DESC, time DESC LIMIT 20";
+        $sql = "SELECT * FROM data WHERE date = '".$day."' ORDER BY date DESC, time DESC LIMIT 20";
         $result = $conn->query($sql);
         
         $array = [];
-        echo $result->num_rows;
         if ($result->num_rows > 0) {
             // output data of each row
             $i = 0;
