@@ -1,0 +1,258 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:robot_eslo_commande-cache
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title "Projet_ESLO_commande"
+Date "23 jun 2016"
+Rev ""
+Comp "HEPIA"
+Comment1 "Blazevic & Liatti"
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L GP2Y0A41 U5
+U 1 1 576BE516
+P 8550 2500
+F 0 "U5" H 8650 2050 60  0000 C CNN
+F 1 "GP2Y0A41" H 8600 2900 60  0000 C CNN
+F 2 "" H 8550 2500 60  0000 C CNN
+F 3 "" H 8550 2500 60  0000 C CNN
+	1    8550 2500
+	-1   0    0    1   
+$EndComp
+$Comp
+L BASYS_2 U1
+U 1 1 576BF312
+P 4800 4300
+F 0 "U1" H 4350 3450 60  0000 C CNN
+F 1 "BASYS_2" H 4450 5600 60  0000 C CNN
+F 2 "" H 4800 4300 60  0000 C CNN
+F 3 "" H 4800 4300 60  0000 C CNN
+	1    4800 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L GP2Y0A41 U6
+U 1 1 576BF203
+P 8500 3650
+F 0 "U6" H 8600 3200 60  0000 C CNN
+F 1 "GP2Y0A41" H 8550 4050 60  0000 C CNN
+F 2 "" H 8500 3650 60  0000 C CNN
+F 3 "" H 8500 3650 60  0000 C CNN
+	1    8500 3650
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 576BF3E1
+P 7550 3900
+F 0 "#PWR?" H 7550 3900 30  0001 C CNN
+F 1 "GND" H 7550 3830 30  0001 C CNN
+F 2 "" H 7550 3900 60  0000 C CNN
+F 3 "" H 7550 3900 60  0000 C CNN
+	1    7550 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 576BF3F5
+P 7550 2750
+F 0 "#PWR?" H 7550 2750 30  0001 C CNN
+F 1 "GND" H 7550 2680 30  0001 C CNN
+F 2 "" H 7550 2750 60  0000 C CNN
+F 3 "" H 7550 2750 60  0000 C CNN
+	1    7550 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 576BF419
+P 7550 3050
+F 0 "#PWR?" H 7550 3010 30  0001 C CNN
+F 1 "+3.3V" H 7550 3160 30  0000 C CNN
+F 2 "" H 7550 3050 60  0000 C CNN
+F 3 "" H 7550 3050 60  0000 C CNN
+	1    7550 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 576BF454
+P 7550 1900
+F 0 "#PWR?" H 7550 1860 30  0001 C CNN
+F 1 "+3.3V" H 7550 2010 30  0000 C CNN
+F 2 "" H 7550 1900 60  0000 C CNN
+F 3 "" H 7550 1900 60  0000 C CNN
+	1    7550 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 576BF48C
+P 3950 3150
+F 0 "#PWR?" H 3950 3110 30  0001 C CNN
+F 1 "+3.3V" H 3950 3260 30  0000 C CNN
+F 2 "" H 3950 3150 60  0000 C CNN
+F 3 "" H 3950 3150 60  0000 C CNN
+	1    3950 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 576BF492
+P 3950 3450
+F 0 "#PWR?" H 3950 3450 30  0001 C CNN
+F 1 "GND" H 3950 3380 30  0001 C CNN
+F 2 "" H 3950 3450 60  0000 C CNN
+F 3 "" H 3950 3450 60  0000 C CNN
+	1    3950 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8000 3450 7550 3450
+Wire Wire Line
+	8050 2300 7550 2300
+Wire Wire Line
+	7550 2400 7550 2750
+Wire Wire Line
+	7550 1900 7550 2100
+Wire Wire Line
+	7550 3550 7550 3900
+Wire Wire Line
+	7550 3050 7550 3250
+Connection ~ 7550 3750
+Connection ~ 7550 2600
+Wire Wire Line
+	8050 2400 7550 2400
+Connection ~ 7550 2500
+Wire Wire Line
+	8000 3550 7550 3550
+Connection ~ 7550 3650
+Connection ~ 7550 3150
+Wire Wire Line
+	8000 3650 7800 3650
+Wire Wire Line
+	7800 3650 7800 3250
+Wire Wire Line
+	7800 3250 7550 3250
+Wire Wire Line
+	8050 2500 7800 2500
+Wire Wire Line
+	7800 2500 7800 2100
+Wire Wire Line
+	7800 2100 7550 2100
+Connection ~ 7550 2000
+Wire Wire Line
+	3950 3250 3950 3150
+Wire Wire Line
+	3950 3350 3950 3450
+Wire Wire Line
+	5550 2350 5550 3200
+Wire Wire Line
+	6400 3850 6400 3650
+Wire Wire Line
+	5650 3300 5550 3300
+Wire Wire Line
+	6400 3500 5875 3500
+Wire Wire Line
+	5550 3850 6400 3850
+Wire Wire Line
+	6175 4300 5550 4300
+Wire Wire Line
+	6175 2200 6175 4300
+Wire Wire Line
+	6175 3350 6400 3350
+Wire Wire Line
+	6400 2200 6175 2200
+Connection ~ 6175 3350
+$Comp
+L BASYS_2 U?
+U 1 1 576BF859
+P 4800 4300
+F 0 "U?" H 4350 3450 60  0000 C CNN
+F 1 "BASYS_2" H 4450 5600 60  0000 C CNN
+F 2 "" H 4800 4300 60  0000 C CNN
+F 3 "" H 4800 4300 60  0000 C CNN
+	1    4800 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L TLC548 U4
+U 1 1 576BFA18
+P 7000 2300
+F 0 "U4" H 7200 1900 60  0000 C CNN
+F 1 "TLC548" H 7000 2750 60  0000 C CNN
+F 2 "~" H 7250 2350 60  0000 C CNN
+F 3 "~" H 7250 2350 60  0000 C CNN
+	1    7000 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 2500 5650 2500
+Wire Wire Line
+	6400 2350 5550 2350
+Wire Wire Line
+	5650 2500 5650 3300
+Wire Wire Line
+	5875 3500 5875 3750
+Wire Wire Line
+	5875 3750 5550 3750
+$Comp
+L TLC548 U3
+U 1 1 576BFB38
+P 7000 3450
+F 0 "U3" H 7200 3050 60  0000 C CNN
+F 1 "TLC548" H 7000 3900 60  0000 C CNN
+F 2 "~" H 7250 3500 60  0000 C CNN
+F 3 "~" H 7250 3500 60  0000 C CNN
+	1    7000 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 4850 5950 4850
+Text GLabel 5950 4850 2    60   Input ~ 0
+UART_TX
+Wire Wire Line
+	5550 4950 5900 4950
+Text GLabel 5950 5000 2    60   Input ~ 0
+UART_RX
+Wire Wire Line
+	5900 4950 5900 5000
+Wire Wire Line
+	5900 5000 5950 5000
+$EndSCHEMATC
