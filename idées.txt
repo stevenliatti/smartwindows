@@ -7,3 +7,4 @@
 
  comme étant un système d'alarmee commandé par la carte waspmote
 -au lieu de la led et du bargraph, on peut mettre en place des servomoteurs pour une simulation plus proche de la réalité
+-fenêtre temps réel des valeurs en ajax
