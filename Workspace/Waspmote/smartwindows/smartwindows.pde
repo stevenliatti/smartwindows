@@ -17,7 +17,7 @@
 #define BLIND_STATE_7 55
 #define BLIND_STATE_8 56
 #define BLIND_STATE_9 57
-#define BLIND_STATE_10 58
+#define BLIND_STATE_10 116
 
 #define DELAY 100
 
