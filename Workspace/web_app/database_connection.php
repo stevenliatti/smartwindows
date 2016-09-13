@@ -37,14 +37,14 @@
     }
 
     //Sélection de la configuration utilisateur
-    function config_retrieve($conn) {
+    function get_config($conn) {
         $sql = "SELECT * FROM state ORDER BY id DESC LIMIT 0, 1";
         $row = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
         
         $auto_checked = "";
         $manual_checked = "";
         $open_checked = "";
-        $closeChecked = "";
+        $close_checked = "";
 
         //Condition pour le mode auto/manuel
         if ($row['config_mode'] == "0")
@@ -54,7 +54,7 @@
 
         //Condition pour l'ouverture/fermeture de la fenêtre
         if ($row['window'] == "0")
-            $closeChecked = "checked";
+            $close_checked = "checked";
         else
             $open_checked = "checked";
 
@@ -68,14 +68,14 @@
     }
 
     // Enregistrement en base de données de l'état de la config
-    function config_save($conn) {
+    function save_config($conn) {
         $mode = $_POST['mode'];
         $auto_checked = $mode == "0" ? "checked" : "";
         $manual_checked = $mode == "1" ? "checked" : "";
 
         $window = $_POST['window'];
         $open_checked = $window == "1" ? "checked" : "";
-        $closeChecked = $window == "0" ? "checked" : "";
+        $close_checked = $window == "0" ? "checked" : "";
 
         $blind_value = $_POST['slide'];
 

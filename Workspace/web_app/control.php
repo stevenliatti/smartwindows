@@ -1,13 +1,11 @@
 <?php
 
 	require 'database_connection.php';
-
-	define("DATABASE_IP", "localhost");
-	define("USER", "root");
-	define("PASWORD", "");
+	
+	define("DATABASE_IP", "192.168.32.79");
+    define("USER", "admin");
+    define("PASWORD", "admin");
 	define("DATABASE_NAME", "smartwindows");
-
-	$selected_day = date("Y-m-d");
 
 	$db = database_open(DATABASE_IP, USER, PASWORD, DATABASE_NAME);
 	
@@ -26,10 +24,11 @@
 	<?php
 	
 	if (empty($_POST)) {
-		config_retrieve($db);
+		get_config($db);
 	}
 	else {
-		config_save($db);
+		save_config($db);
+		include("socket.php");
 	}
 	?>
 

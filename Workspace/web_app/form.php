@@ -6,7 +6,7 @@
 
 	<p id="state_window">La fenêtre est : <br>
 		<input type="radio" name="window" value="1" id="open" <?php echo $open_checked; ?> ><label for="open"> Ouverte</label><br>
-		<input type="radio" name="window" value="0" id="close" <?php echo $closeChecked; ?> ><label for="close"> Fermée</label>
+		<input type="radio" name="window" value="0" id="close" <?php echo $close_checked; ?> ><label for="close"> Fermée</label>
 	</p>
 
 	<p> Le store est à ce niveau : <br>
