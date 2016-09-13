@@ -84,3 +84,15 @@ On a mis en place une page Ajax pour envoyer des contrôles à la waspmote (test
 On a fait la liaison python-waspmote pour modifier les états et la configuration. Nous 
 avons adapté le code de la waspmote pour recevoir ces commandes. On a réalisé le schéma 
 électrique avec KiCad. On a récupéré et ploté des données avec Chart.js.
+
+#### 13.09.2016
+On a abandonné Ajax pour le formulaire de configuration Web-> form html classique.
+Du coup on a une page php qui permet de voir l'état actuel du système, de changer le mode 
+(auto/manuel) et l'ouverture des stores et fenêtre. On charge et enregistre les changements vers et
+depuis la base de données. On envoit les commandes manuelles à python via un socket php. 
+Il manque seulement à finir le socket python qui écoute le serveur php. 
+Côté chart.js, les graphiques avancent super, on affiche les températures, la luminosité et 
+la vitesse du vent en fonction des données en base. Des fonctions javascript sont 
+là pour choisir la période temporelle d'affichage. 
+Début d'études sur bootstrap CSS, pour avoir un design de ouf. Plusieurs pages ont été codées, 
+ainsi qu'un menu responsive qui déchire.
