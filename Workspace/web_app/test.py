@@ -2,8 +2,8 @@ import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-host = '192.168.32.50'
-port = int(3000)
+host = '127.0.0.1'
+port = int(2001)
 s.bind((host, port))
 while 1:
 	s.listen(1)

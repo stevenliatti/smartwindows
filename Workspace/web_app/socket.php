@@ -1,11 +1,11 @@
 <?php
 
-$auto_checked = $_POST['mode'] == "0" ? "a" : "c";
+$auto_checked = $_POST['mode'] == "0" ? "a" : "m";
 $open_checked = $_POST['window'] == "1" ? "o" : "c";
 $blind_value = $_POST['slide'] == "10" ? "t" : $_POST['slide'];
 
-$host = "192.168.32.50";
-$port = 3000;
+$host = "127.0.0.1";
+$port = 2001;
 
 $output = $auto_checked . ":" . $open_checked . ":" . $blind_value;
 
