@@ -42,13 +42,16 @@ def average_data():
 
 data_queue = Queue.Queue()
 
-database_ip = "localhost"
-mysql_username = "root"
-mysql_password = ""
+database_ip = "192.168.32.79"
+mysql_username = "admin"
+mysql_password = "admin"
 database_name = "smartwindows"
 
 socket_ip = "192.168.32.241"
 socket_port = 2000
+
+socket_web_ip = "127.0.0.1"
+socket_web_port = 2001
 
 ## pour le mode : 0 => automatique, 1 => manuel
 ## current_M => mode en cours
@@ -69,10 +72,10 @@ if __name__ == "__main__":
         while 1:
 
                 ## lancement des threads
-                th_reception = thread.reception(socket_ip, socket_port, data_queue)
-                th = thread.reception_web(socket_ip, socket_port)
-                th_reception.start()
-                # th.start()
+                # th_reception = thread.reception(socket_ip, socket_port, data_queue)
+                th_web_reception = thread.reception_web(socket_ip, socket_port, socket_web_ip, socket_web_port)
+                # th_reception.start()
+                th_web_reception.start()
 
                 if not data_queue.empty():
                         date_now, time_now = get_date_time()

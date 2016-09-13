@@ -59,40 +59,51 @@ class reception(Thread):
                         ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
                 else:
-                    print "Donnees refuees!!!"
+                    print "Donnees refusees!!!"
 
 ## thread pour la reception des nouvelles configurations venant de l'application web
 ## et les envoyer a la carte waspmote
 class reception_web(Thread):
 
-    def __init__(self, ip, port):
+    def __init__(self, ip, port, ip_web, port_web):
         Thread.__init__(self)
         self.ip = ip
         self.port = port
+        self.ip_web = ip_web
+        self.port_web = port_web
 
     def run(self):
+        sock_web = socket.socket_web_open(self.ip_web, self.port_web)
+
         while 1:
-            pass
             with verrou:
-                sock = socket.socket_open(self.ip, self.port)
-                config = sock.recv(1024)
+                sock_web.listen(1)
+                conn, addr = sock_web.accept()
+
+                config = con.recv(1024)
+                print config.decode("utf-8")
                 ## spliter le message dans un tableau a 3 cases
                 ## 1ere case contient le mode : "a" pour auto et "m" pour manuel
                 ## 2eme case l'etat de la fenetre : "o" pour ouvrir et "c" pour fermer
                 ## 3eme case l'etat du store : un chiffre de "0", "1", "2", ..., "9", "t" ("t" pour 10)
-                # ch = response.split(":")
-                # sock.send(ch[0])
-                # if (ch[0] == "m"):
-                #     sock.send(ch[1])
-                #     sock.send(ch[2])
-                sock.send("m")
-                sock.send("o")
-                sock.send("t")
 
-                time.sleep(20)
-                sock.send("c")
-                sock.send("0")
+                # if (config != ""):
+                #     ch = config.split(":")
+                #     sock = socket.socket_open(self.ip, self.port)
+                #     sock.send(ch[0])
+                #     if (ch[0] == "m"):
+                #         sock.send(ch[1])
+                #         sock.send(ch[2])
 
-                time.sleep(20)
+                # sock.send("m")
+                # sock.send("o")
+                # sock.send("t")
 
-                socket.socket_close(sock)
+                # time.sleep(20)
+                # sock.send("c")
+                # sock.send("0")
+
+                # time.sleep(20)
+
+        socket.socket_close(sock)
+        socket.socket_close(sock_web)

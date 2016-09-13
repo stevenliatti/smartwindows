@@ -11,6 +11,17 @@ def socket_open(ip, port):
     except Exception as e:
         print "Impossible d'ouvrir le socket: {}".format(e)
 
+## socket connection web
+def socket_web_open(ip, port):
+    print "Ouverture du socket WEB..."
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind((ip, port))
+        print "Socket_WEB ==> ouvert"
+        return sock
+    except Exception as e:
+        print "Impossible d'ouvrir le socket_WEB: {}".format(e)
+
 ## socket reception message function
 def reception_socket(sock):
     ## declaration du dictionnaire
