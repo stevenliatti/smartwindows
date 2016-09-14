@@ -43,37 +43,59 @@ class reception(Thread):
 ## et les envoyer a la carte waspmote
 class reception_web(Thread):
 
-    def __init__(self, ip, port, ip_web, port_web):
+    def __init__(self, ip, port):
         Thread.__init__(self)
         self.ip = ip
         self.port = port
-        self.ip_web = ip_web
-        self.port_web = port_web
+        #self.ip_web = ip_web
+        #self.port_web = port_web
         
-        self.sock_web = socket.socket_web_open(self.ip_web, self.port_web)
+        #self.sock_web = socket.socket_web_open(self.ip_web, self.port_web)
     def run(self):
 
+        
         while 1:
             with verrou:
-                self.sock_web.listen(1)
-                conn, addr = self.sock_web.accept()
+                print "connexion base de donnee au niveau du thread"
+                #self.sock_web.listen(1)
+                #conn, addr = self.sock_web.accept()
 
-                config = conn.recv(1024)
-                print config.decode("utf-8")
+                #config = conn.recv(1024)
+                #print config.decode("utf-8")
                 ## spliter le message dans un tableau a 3 cases
                 ## 1ere case contient le mode : "a" pour auto et "m" pour manuel
                 ## 2eme case l'etat de la fenetre : "o" pour ouvrir et "c" pour fermer
                 ## 3eme case l'etat du store : un chiffre de "0", "1", "2", ..., "9", "t" ("t" pour 10)
-
-                if (config != ""):
-                    ch = config.split(":")
+                db = db_conn.database_open(main_file.database_ip, main_file.mysql_username, main_file.mysql_password, main_file.database_name)
+                last_state = db_conn.get_last_state(db)
+            
+                print "last_state[1] : " + last_state[1]
+                print "main_file.current_M : " + main_file.current_M
+                print "last_state[2] : " + last_state[2]
+                print "main_file.current_WS : " + main_file.current_WS
+                print "last_state[3] : " + last_state[3]
+                print "main_file.current_BL : " + main_file.current_BL
+                if main_file.current_M != last_state[1] or main_file.current_WS != last_state[2] or main_file.current_BL != last_state[3]:
+                    mode = "m" if last_state[1] == "1" else "a"
+                
+                    win = "c" if last_state[2] == "0" else "o"
+                
+                    blind = last_state[3] if last_state[3] != "10" else "t"
+                    
+                    print "mode : " + mode + " -  win : " + win + " - blind : " + blind
+                
                     sock = socket.socket_open(self.ip, self.port)
-                    sock.send(ch[0])
-                    if (ch[0] == "m"):
-                        sock.send(ch[1])
-                        sock.send(ch[2])
+                    sock.send(mode)
+                    print "******* envoie du mode"
+                
+                    sock.send(win)
+                    sock.send(blind)
+                    print "envoie etat termine*********************************************************"
 
                     socket.socket_close(sock)
+               
+                db_conn.database_close(db)
+            time.sleep(10)
                 # sock.send("m")
                 # sock.send("o")
                 # sock.send("t")
@@ -84,4 +106,4 @@ class reception_web(Thread):
 
                 # time.sleep(20)
 
-        socket.socket_close(self.sock_web)
+        #socket.socket_close(self.sock_web)

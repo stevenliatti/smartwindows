@@ -28,7 +28,6 @@
 	}
 	else {
 		save_config($db);
-		include("socket.php");
 	}
 	?>
 

@@ -35,3 +35,18 @@ def insert_state(db, config_mode, window, blind, date, time, users_id):
         print "Insertion etat => OK"
     except Exception as e:
         print "Impossible d'inserrer les etat : {}".format(e)
+        
+#selection du dernier etat
+def get_last_state(db):
+    sql_string = "SELECT * FROM state ORDER BY id DESC LIMIT 0, 1"
+    try:
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
+        # Execute the SQL command
+        cursor.execute(sql_string)
+        print "----------------------------"
+        dd = cursor.fetchone()
+        print dd
+        return dd
+    except Exception as e:
+        print "Impossible de recuperer l'etat : {}".format(e)
