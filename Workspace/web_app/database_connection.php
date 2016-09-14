@@ -16,9 +16,13 @@
     }
 
     //selection des données par jour
-    function day_data_select($conn, $day)
+    function day_data_select($conn, $day_begin, $time_begin = "00:00:00", $day_end = "", $time_end = "23:59:59")
     {
-        $sql = "SELECT * FROM data WHERE date = '".$day."' ORDER BY date DESC, time DESC LIMIT 20";
+        if ($day_end == "")
+            $day_end = $day_begin;
+        echo "<h3>dans la fonction SELECT : <br> $day_begin<br> $time_begin<br> $day_end<br> $time_end";
+
+        $sql = "SELECT * FROM data WHERE date >= '".$day_begin."' AND date <= '".$day_end."' AND time >= '".$time_begin."' AND time <= '".$time_end."' ORDER BY date DESC, time DESC";
         $result = $conn->query($sql);
         
         $array = [];
@@ -31,7 +35,7 @@
             }
             return $array;
         } else {
-            echo "0 results";
+            echo "<br>0 results";
             return null;
         }
     }

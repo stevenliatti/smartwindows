@@ -84,20 +84,17 @@ function display_day(ctx, label_array, data_label1, data_array1, color_string1, 
 
 // fonction pour ajouter les champs de date et de temps si l'utilisateur
 // sélectionne l'option "tranche horaire"
-function add_content(value) {
-		date_element = document.getElementById("selected_date");
-		time_element = document.getElementById("selected_time");
+function change_content(value) {
+	selected_chart = document.getElementById("selected_chart");
+	date_element = document.getElementById("selected_date");
+	min_max_date_element = document.getElementById("selected_min_max_date");
 	switch(value){
-		case "day":
-			date_element.style.display='';
-			time_element.style.display='none';
-			break;
 		case "day_time":
-			date_element.style.display='';
-			time_element.style.display='';
+			date_element.style.display='none';
+			min_max_date_element.style.display='';
 			break;
 		default :
-			date_element.style.display='none';
-			time_element.style.display='none';
+			date_element.style.display='';
+			min_max_date_element.style.display='none';
 	}
 }

@@ -2,25 +2,54 @@
     //importation des fichiers de fonctions
     require 'database_connection.php';
 
-    // define("DATABASE_IP", "192.168.32.79");
-    // define("USER", "admin");
-    // define("PASWORD", "admin");
+    define("DATABASE_IP", "192.168.32.79");
+    define("USER", "admin");
+    define("PASWORD", "admin");
 
 
-    define("DATABASE_IP", "localhost");
-    define("USER", "root");
-    define("PASWORD", "");
+    // define("DATABASE_IP", "localhost");
+    // define("USER", "root");
+    // define("PASWORD", "");
     define("DATABASE_NAME", "smartwindows");
 
     $selected_chart = "day";
     $selected_date = date("Y-m-d");
-    $selected_time = "00:00";
-    if (isset($_GET['selected_chart']) AND isset($_GET['selected_date']) AND isset($_GET['selected_time'])){
+    $selected_min_time = "00:00";
+    $selected_min_date = date("Y-m-d");
+    $selected_max_time = "23:59";
+    $selected_max_date = date("Y-m-d");
 
+    if (isset($_GET['selected_chart'])){
+    	$selected_chart = $_GET['selected_chart'];
+    }
+    if (isset($_GET['selected_date'])){
+    	$selected_date = $_GET['selected_date'];
+    }
+    if (isset($_GET['selected_min_date'])){
+    	$selected_min_date = $_GET['selected_min_date'];
+    }
+    if (isset($_GET['selected_min_time'])){
+    	$selected_min_time = $_GET['selected_min_time'];
+    }
+    if (isset($_GET['selected_max_date'])){
+    	$selected_max_date = $_GET['selected_max_date'];
+    }
+    if (isset($_GET['selected_max_time'])){
+    	$selected_max_time = $_GET['selected_max_time'];
     }
 
     $db = database_open(DATABASE_IP, USER, PASWORD, DATABASE_NAME);
-    $data_array = day_data_select($db, $selected_date);
+    //function day_data_select($conn, $day_begin, $time_begin = "00:00:00", $day_end = "", $time_end = "23:59:59")
+    echo "<br> $selected_chart <br> $selected_date <br> $selected_min_date <br> $selected_min_time <br> $selected_max_date <br> $selected_max_time<br>";
+    switch ($selected_chart) {
+    	case "day_time": 
+    		$data_array = day_data_select($db, $selected_min_date, $selected_min_time, $selected_max_date, $selected_max_time);
+    		break;
+    	
+    	default:
+    		$data_array = day_data_select($db, $selected_date);
+    		break;
+    }
 
     $temp_int_array = [];
     $luminosity_array = [];
@@ -47,31 +76,31 @@
         <script type="text/javascript" src="used_function.js"></script>
     </head>
     <body>
-    	<h1><?php echo "Affichage par jour : Le " . date("d-m-Y"); ?></h1>
+    	<a href="test_chart.php">home</a>
+    	<h1><?php echo "Affichage par jour : Le " . $selected_date ?></h1>
 	   	<form action="" method="get">
 	   		Affichage par : 
-			<select name="selected_chart" onchange="add_content(this.value);">
-				<option value="day">jour</option>
-				<option value="day_time">tranche horaire</option>
-				<option value="month">mois</option>
-				<option value="year">année</option>
+			<select name="selected_chart" onchange="change_content(this.value);">
+				<option value="day" <?php if($selected_chart == 'day'){echo("selected");}?>>jour</option>
+				<option value="day_time" <?php if($selected_chart == 'day_time'){echo("selected");}?>>tranche horaire</option>
+				<option value="month" <?php if($selected_chart == 'month'){echo("selected");}?>>mois</option>
+				<option value="year" <?php if($selected_chart == 'year'){echo("selected");}?>>année</option>
 			</select><br>
-			<span id="selected_min_date">
+			<span id="selected_date" style="display: <?php if($selected_chart != 'day'){echo("none");}?>;">
+				Choisissez le jour : 
+				<input name="selected_date" type="date" value="<?php echo $selected_date; ?>"></input>
+			</span>
+			<span id="selected_min_max_date" style="display: <?php if($selected_chart != 'day_time'){echo("none");}?>;">
 				Choisissez la date de début : 
-				<input name="selected_min_date" type="date"></input>
-			</span>
-			<span id="selected_min_time">
+				<input name="selected_min_date" type="date" value="<?php echo $selected_min_date; ?>"></input>
 				à : 
-				<input name="selected_min_time" type="time" style="display:none;"></input><br>
-			</span>
-			<span id="selected_max_date">
-				Choisissez la date de début : 
-				<input name="selected_max_date" type="date"></input>
-			</span>
-			<span id="selected_max_time">
+				<input name="selected_min_time" type="time" value="<?php echo $selected_min_time; ?>"></input><br>
+				Choisissez la date de fin : 
+				<input name="selected_max_date" type="date" value="<?php echo $selected_max_date; ?>"></input>
 				à : 
-				<input name="selected_max_time" type="time" style="display:none;"></input><br>
+				<input name="selected_max_time" type="time" value="<?php echo $selected_max_time; ?>"></input><br>
 			</span>
+			<br>
 			<input type="submit" value="Choisir">
 		</form>
     	<table>
