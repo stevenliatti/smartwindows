@@ -94,4 +94,6 @@
         echo "<p>État au : " . $date . " à " . $time . "</p>";
     }
 
+    $db = database_open("127.0.0.1", "admin", "admin", "smartwindows");
+
 ?>

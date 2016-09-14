@@ -96,3 +96,10 @@ la vitesse du vent en fonction des données en base. Des fonctions javascript so
 là pour choisir la période temporelle d'affichage. 
 Début d'études sur bootstrap CSS, pour avoir un design de ouf. Plusieurs pages ont été codées, 
 ainsi qu'un menu responsive qui déchire.
+
+#### 14.09.2016
+Nous nous sommes arrachés les cheveux à faire cohabiter l'envoi et la réception de données
+en python (voir commits du jour). Finalement, nous lisons les données sur la base de donées 
+en python plutôt que de les écouter via un socket relié au serveur web.
+Nous avons continué les graphiques avec Chart.js et avons commencé des pages de 
+connexion/gestion des users. Il faut qu'on se grouille !
