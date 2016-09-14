@@ -74,8 +74,8 @@ if __name__ == "__main__":
         while 1:
 
                 ## lancement des threads
-                # th_reception = thread.reception(socket_ip, socket_port, data_queue)
-                # th_reception.start()
+                th_reception = thread.reception(socket_ip, socket_port, data_queue)
+                th_reception.start()
 
                 if not data_queue.empty():
                         date_now, time_now = get_date_time()
@@ -87,7 +87,7 @@ if __name__ == "__main__":
                         db_conn.insert_data(db, to_be_saved["TI"], to_be_saved["L"], to_be_saved["TE"], to_be_saved["WIND"], date_now, time_now)
                         ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
-                time.sleep(15)
+                time.sleep(10)
 
 
 

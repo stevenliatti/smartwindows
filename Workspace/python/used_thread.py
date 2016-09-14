@@ -1,12 +1,12 @@
 import random
 import time
 import sys
-from threading import Thread, Lock
+from threading import Thread, RLock
 import socket_functions as socket
 import ClientSocket as main_file
 import database_functions as db_conn
 
-verrou = Lock()
+verrou = RLock()
 
 ## thread pour la reception des donnees de la carte waspmote et les enregistrer l'etat dans la base
 class reception(Thread):
