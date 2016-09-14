@@ -93,4 +93,5 @@
 
         echo "<p>État au : " . $date . " à " . $time . "</p>";
     }
+
 ?>
