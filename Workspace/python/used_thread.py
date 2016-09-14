@@ -1,34 +1,12 @@
 import random
 import time
 import sys
-from threading import Thread, RLock
+from threading import Thread, Lock
 import socket_functions as socket
 import ClientSocket as main_file
 import database_functions as db_conn
 
-verrou = RLock()
-
-class action_manuelle(Thread):
-
-    def __init__(self, ip, port):
-        Thread.__init__(self)
-        self.ip = ip
-        self.port = port
-
-    def run(self):
-        with verrou:
-            sock = socket.socket_open(self.ip, self.port)
-            if ((random.randint(1, 60) % 2) == 0):
-                socket.send_socket(sock, "o")
-                sys.stdout.write("ouverture de la fenetre\n")
-            else:
-                socket.send_socket(sock, "c")
-                sys.stdout.write("fermeture de la fenetre\n")
-            sys.stdout.flush()
-            attente = 3
-            attente += random.randint(1, 60) / 100
-            time.sleep(attente)
-            socket.socket_close(sock)
+verrou = Lock()
 
 ## thread pour la reception des donnees de la carte waspmote et les enregistrer l'etat dans la base
 class reception(Thread):
@@ -71,30 +49,31 @@ class reception_web(Thread):
         self.port = port
         self.ip_web = ip_web
         self.port_web = port_web
-
+        
+        self.sock_web = socket.socket_web_open(self.ip_web, self.port_web)
     def run(self):
-        sock_web = socket.socket_web_open(self.ip_web, self.port_web)
 
         while 1:
             with verrou:
-                sock_web.listen(1)
-                conn, addr = sock_web.accept()
+                self.sock_web.listen(1)
+                conn, addr = self.sock_web.accept()
 
-                config = con.recv(1024)
+                config = conn.recv(1024)
                 print config.decode("utf-8")
                 ## spliter le message dans un tableau a 3 cases
                 ## 1ere case contient le mode : "a" pour auto et "m" pour manuel
                 ## 2eme case l'etat de la fenetre : "o" pour ouvrir et "c" pour fermer
                 ## 3eme case l'etat du store : un chiffre de "0", "1", "2", ..., "9", "t" ("t" pour 10)
 
-                # if (config != ""):
-                #     ch = config.split(":")
-                #     sock = socket.socket_open(self.ip, self.port)
-                #     sock.send(ch[0])
-                #     if (ch[0] == "m"):
-                #         sock.send(ch[1])
-                #         sock.send(ch[2])
+                if (config != ""):
+                    ch = config.split(":")
+                    sock = socket.socket_open(self.ip, self.port)
+                    sock.send(ch[0])
+                    if (ch[0] == "m"):
+                        sock.send(ch[1])
+                        sock.send(ch[2])
 
+                    socket.socket_close(sock)
                 # sock.send("m")
                 # sock.send("o")
                 # sock.send("t")
@@ -105,5 +84,4 @@ class reception_web(Thread):
 
                 # time.sleep(20)
 
-        socket.socket_close(sock)
-        socket.socket_close(sock_web)
+        socket.socket_close(self.sock_web)

@@ -68,14 +68,14 @@ current_BL = "0"
 ############################################
 
 if __name__ == "__main__":
-
+        
+        th_web_reception = thread.reception_web(socket_ip, socket_port, socket_web_ip, socket_web_port)
+        th_web_reception.start()
         while 1:
 
                 ## lancement des threads
                 # th_reception = thread.reception(socket_ip, socket_port, data_queue)
-                th_web_reception = thread.reception_web(socket_ip, socket_port, socket_web_ip, socket_web_port)
                 # th_reception.start()
-                th_web_reception.start()
 
                 if not data_queue.empty():
                         date_now, time_now = get_date_time()
