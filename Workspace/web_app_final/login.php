@@ -21,7 +21,7 @@
 		else {
 			$_SESSION['id'] = $req['id'];
 			$_SESSION['name'] = $name;
-			$login = 'Vous êtes connecté !';
+			$_SESSION['role'] = $req['role'];
 			header('Location: index.php');
 			exit();
 		}

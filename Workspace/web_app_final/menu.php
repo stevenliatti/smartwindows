@@ -29,20 +29,20 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li class="active"><a href="index.php">Accueil <span class="sr-only">(current)</span></a></li>
-
 					<?php
 					if (isset($_SESSION['id']) AND isset($_SESSION['name'])) {
 					?>
-						<li class="dropdown">
-							<a href="" class="dropdown-toggle" data-toggle="dropdown"> Données <b class="caret"></b></a>
-							<ul class="nav dropdown-menu">
-								<li><a href="data.php?page=temp">Température</a></li>
-								<li><a href="data.php?page=lum">Luminosité</a></li>
-								<li><a href="data.php?page=wind">Vent</a></li>
-							</ul>
-						</li>
+						<li class="active"><a href="index.php">Toutes les données<span class="sr-only">(current)</span></a></li>
+						<li><a href="index.php?page=temp">Températures</a></li>
+						<li><a href="index.php?page=lum">Luminosité</a></li>
+						<li><a href="index.php?page=wind">Vent</a></li>
+						<?php
+						if ($_SESSION['role'] == "admin") {
+						?>
 						<li><a href="control.php">Contrôle</a></li>
+						<?php
+						}
+						?>
 					<?php
 					}
 					?>

@@ -1,18 +1,5 @@
-<?php 
-	//importation des fichiers de fonctions
-
-
-	// define("DATABASE_IP", "192.168.32.79");
-	// define("USER", "admin");
-	// define("PASWORD", "admin");
-
-
-	// // define("DATABASE_IP", "localhost");
-	// // define("USER", "root");
-	// // define("PASWORD", "");
-	// define("DATABASE_NAME", "smartwindows");
-
-	$page = "temp";
+<?php
+	$page = "";
 
 	$selected_chart = "day";
 	$selected_date = date("Y-m-d");
@@ -120,8 +107,8 @@
 	}
 ?>
 
-
-		<h1><?php echo "Affichage par jour : Le " . $selected_date ?></h1>
+	<div class="container-fluid">
+		<h2><?php echo "Affichage par jour : Le " . $selected_date ?></h2>
 		<form action="" method="get" class="form-horizontal">
 			<div class="controls">
 				<div class="row">
@@ -173,28 +160,52 @@
 					</div>
 				</span>
 				<br>
-				<input type="submit" value="Choisir">
+				<input class="btn btn-primary" type="submit" value="Choisir">
 			</div>
 		</form>
 		<?php
 		if ($selected_chart == "day" or $selected_chart == "day_time")
 		{
 		?>
-			<table>
-				<tr>
-					<td>
-						<canvas id="temperature_day" width="500" height="400"></canvas>
-					</td>
-					<td>
-						<canvas id="luminosity_day" width="500" height="400"></canvas>
-					</td>
-				</tr>
-				<tr>
-					<td calspan="2">
-						<canvas id="wind_day" width="500" height="400"></canvas>
-					</td>
-				</tr>
-			</table>
+			<div class="row">
+			<?php
+			if ($page == "temp") {
+			?>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="temperature_day" width="700" height="500"></canvas>
+				</div>
+			<?php
+			}
+			elseif ($page == "lum") {
+			?>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="luminosity_day" width="700" height="500"></canvas>
+				</div>
+			<?php
+			}
+			elseif ($page == "wind") {
+			?>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="wind_day" width="700" height="500"></canvas>
+				</div>
+			<?php
+			}
+			else {
+			?>
+				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+					<canvas id="temperature_day" width="400" height="400"></canvas>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+					<canvas id="luminosity_day" width="400" height="400"></canvas>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+					<canvas id="wind_day" width="400" height="400"></canvas>
+				</div>
+			<?php
+			}
+			?>
+			</div>
+	</div>
 			<script>
 				var labels = <?php echo '["' . implode('", "', $date_array) . '"]' ?>;
 
@@ -216,24 +227,53 @@
 		else
 		{
 		?>
-			<table>
-				<tr>
-					<td>
-						<canvas id="temperature_in_month" width="500" height="400"></canvas>
-					</td>
-					<td>
-						<canvas id="temperature_out_month" width="500" height="400"></canvas>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<canvas id="luminosity_month" width="500" height="400"></canvas>
-					</td>
-					<td calspan="2">
-						<canvas id="wind_month" width="500" height="400"></canvas>
-					</td>
-				</tr>
-			</table>
+			<div class="row">
+			<?php
+			if ($page == "temp") {
+			?>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="temperature_in_month" width="500" height="400"></canvas>
+				</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="temperature_out_month" width="500" height="400"></canvas>
+				</div>
+			<?php
+			}
+			elseif ($page == "lum") {
+			?>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="luminosity_month" width="500" height="400"></canvas>
+				</div>
+			<?php
+			}
+			elseif ($page == "wind") {
+			?>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="wind_month" width="500" height="400"></canvas>
+				</div>
+			<?php
+			}
+			else {
+			?>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="temperature_in_month" width="500" height="400"></canvas>
+				</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="temperature_out_month" width="500" height="400"></canvas>
+				</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="luminosity_month" width="500" height="400"></canvas>
+				</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<canvas id="wind_month" width="500" height="400"></canvas>
+				</div>
+			<?php
+			}
+			?>
+			</div>
+
+
+	</div>
 			<script>
 				var labels = <?php echo '["' . implode('", "', $date_array) . '"]' ?>;
 
@@ -294,3 +334,4 @@
 		<?php
 		}
 		?>
+	

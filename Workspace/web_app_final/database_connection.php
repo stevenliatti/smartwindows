@@ -30,12 +30,10 @@
 			$i = 0;
 			while($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			   $array[$i] = $row;
-			   echo $array[$i]["temp_int"];
 			   $i++;
 			}
 			return $array;
 		} else {
-			echo "<br>0 results";
 			return null;
 		}
 	}
@@ -62,7 +60,6 @@
 			}
 			return $array;
 		} else {
-			echo "<br>0 results";
 			return null;
 		}
 	}
@@ -121,6 +118,6 @@
 		include("form.php");
 	}
 
-	$db = database_open("127.0.0.1", "admin", "admin", "smartwindows");
+	$db = database_open("127.0.0.1", "root", "", "smartwindows");
 
 ?>
