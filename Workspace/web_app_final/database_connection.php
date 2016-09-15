@@ -21,14 +21,16 @@
 			$day_end = $day_begin;
 
 		$sql = "SELECT * FROM data WHERE date >= '".$day_begin."' AND date <= '".$day_end."' AND time >= '".$time_begin."' AND time <= '".$time_end."' ORDER BY date DESC, time DESC";
+
 		$result = $conn->query($sql);
-		
+
 		$array = [];
 		if ($result->num_rows > 0) {
 			// output data of each row
 			$i = 0;
 			while($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			   $array[$i] = $row;
+			   echo $array[$i]["temp_int"];
 			   $i++;
 			}
 			return $array;
