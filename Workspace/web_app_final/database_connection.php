@@ -5,8 +5,7 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } 
-        echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
-        echo "Host information: " . mysqli_get_host_info($conn) . PHP_EOL . "</br>";
+
         return $conn;
     }
     
@@ -64,11 +63,9 @@
 
         $blind_value = $row['blind'];
 
+        $state = "État au : " . $row['date'] . " à " . $row['time'];
+
         include("form.php");
-
-        echo "id : " . $row['id'] . "<br>";
-
-        echo "État au : " . $row['date'] . " à " . $row['time'];
     }
 
     // Enregistrement en base de données de l'état de la config
@@ -91,11 +88,9 @@
                 VALUES ('$mode', '$window', '$blind_value', '$date', '$time', '3')";
         $conn->query($sql);
 
+        $state = "État au : " . $date . " à " . $time;
+
         include("form.php");
-
-        
-
-        echo "<p>État au : " . $date . " à " . $time . "</p>";
     }
 
     $db = database_open("127.0.0.1", "admin", "admin", "smartwindows");
