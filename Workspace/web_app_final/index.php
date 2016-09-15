@@ -42,7 +42,7 @@ include("head.php");
 
 	<?php 
 		include('graphics.php'); 
-		include("table.php");
+		include("table_data.php");
 	?>
 
 		</div>

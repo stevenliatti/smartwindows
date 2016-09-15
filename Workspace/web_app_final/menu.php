@@ -33,6 +33,7 @@
 					if (isset($_SESSION['id']) AND isset($_SESSION['name'])) {
 						$index = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']) == 'index.php' ? 'active' : '';
 						$control = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']) == 'control.php' ? 'active' : '';
+						$admin = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']) == 'admin.php' ? 'active' : '';
 					?>
 						<li class="<?php echo $index;?>">
 							<a href="index.php">Accueil<span class="sr-only">(current)</span></a>
@@ -42,6 +43,9 @@
 						?>
 						<li class="<?php echo $control;?>">
 							<a href="control.php">Contrôle<span class="sr-only">(current)</span></a>
+						</li>
+						<li class="<?php echo $admin;?>">
+							<a href="admin.php">Admin<span class="sr-only">(current)</span></a>
 						</li>
 						<?php
 						}
