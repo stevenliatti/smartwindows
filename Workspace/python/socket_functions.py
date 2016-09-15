@@ -11,18 +11,6 @@ def socket_open(ip, port):
 	except Exception as e:
 		print "Impossible d'ouvrir le socket: {}".format(e)
 
-## socket connection web
-def socket_web_open(ip, port):
-	print "Ouverture du socket WEB..."
-	try:
-		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		print "Socket_WEB ==> socket"
-		sock.bind((ip, port))
-		print "Socket_WEB ==> bind"
-		return sock
-	except Exception as e:
-		print "Impossible d'ouvrir le socket_WEB: {}".format(e)
-
 ## socket reception message function
 def reception_socket(sock):
 	## declaration du dictionnaire
@@ -63,14 +51,6 @@ def reception_socket(sock):
 		return data_dic
 	except Exception as e:
 		print "Wifly : Impossible de recevoir de messages: {}".format(e)
-
-## socket send message function
-def send_socket(sock, msg):
-	print "Wifly : Envoie des donnees :\n" + msg
-	try:
-		sock.send(msg)
-	except Exception as e:
-		print "Wifly : Impossible d'envoyer de messages: {}".format(e)
 
 ## socket close
 def socket_close(sock):
