@@ -5,9 +5,7 @@
 		session_start();
 	}
 
-	if (isset($_SESSION['id']) AND isset($_SESSION['name'])) {
-		echo 'Bonjour ' . $_SESSION['name'];
-	}
+	$login = "";
 
 	if ($_POST) {
 		$name = $_POST['inputName'];
@@ -18,12 +16,14 @@
 		$req = $db->query($sql)->fetch_array(MYSQLI_ASSOC);
 
 		if (!$req) {
-			echo 'Mauvais identifiant ou mot de passe ! <br>';
+			$login = 'Mauvais identifiant ou mot de passe ! <br>';
 		}
 		else {
 			$_SESSION['id'] = $req['id'];
 			$_SESSION['name'] = $name;
-			echo 'Vous êtes connecté !';
+			$login = 'Vous êtes connecté !';
+			header('Location: index.php');
+			exit();
 		}
 	}
 
@@ -43,17 +43,17 @@
 	<title>Smart Windows - Login</title>
 
 	<!-- Bootstrap core CSS -->
-	<link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<link href="bootstrap-3.3.7/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+	<link href="css/bootstrap-3.3.7/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
 	<!-- Custom styles for this template -->
-	<link href="signin.css" rel="stylesheet">
+	<link href="css/signin.css" rel="stylesheet">
 
 	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 	<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-	<script src="bootstrap-3.3.7/assets/js/ie-emulation-modes-warning.js"></script>
+	<script src="css/bootstrap-3.3.7/assets/js/ie-emulation-modes-warning.js"></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -73,7 +73,7 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		  </button>
-		  <a class="navbar-brand" href="index.html">Smart Windows</a>
+		  <a class="navbar-brand" href="index.php">Smart Windows</a>
 		</div>
 	  </div>
 	</nav>
@@ -93,13 +93,18 @@
 		</div>
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 	  </form>
+	  <p class="center"><?php echo $login; ?></p>
 
-	  <p><a href="logout.php">Déconnexion</a></p>
+	  	<?php
+	  	if (isset($_SESSION['id']) AND isset($_SESSION['name'])) {
+			echo 'Bonjour ' . $_SESSION['name'];
+		}
+		?>
 
 	</div> <!-- /container -->
 
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<script src="bootstrap-3.3.7/assets/js/ie10-viewport-bug-workaround.js"></script>
+	<script src="css/bootstrap-3.3.7/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
