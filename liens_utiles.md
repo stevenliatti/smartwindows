@@ -17,3 +17,5 @@
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
 [Exemple LineChart Chart.js](http://bl.ocks.org/tbpgr/304782f57b6f0a0fb8e7)
+
+[jQuery tablesort](https://mottie.github.io/tablesorter/docs/example-widget-bootstrap-theme.html)
