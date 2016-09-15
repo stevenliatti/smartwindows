@@ -37,9 +37,9 @@
 						<li class="dropdown">
 							<a href="" class="dropdown-toggle" data-toggle="dropdown"> Données <b class="caret"></b></a>
 							<ul class="nav dropdown-menu">
-								<li><a href="temperature.html">Température</a></li>
-								<li><a href="luminosity.html">Luminosité</a></li>
-								<li><a href="wind.html">Vent</a></li>
+								<li><a href="data.php">Température</a></li>
+								<li><a href="data.php">Luminosité</a></li>
+								<li><a href="data.php">Vent</a></li>
 							</ul>
 						</li>
 						<li><a href="control.php">Contrôle</a></li>

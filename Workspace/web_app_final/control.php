@@ -37,7 +37,7 @@ include("head.php")
 	?>
 </div>
 
-	
+<?php include("javascript.php"); ?>	
 
 	<script>
 		function sliderValue(value) {
@@ -56,9 +56,6 @@ include("head.php")
 			tooltip: 'always'
 		});
 	</script>
-
-
-<?php include("javascript.php"); ?>
 
 </body>
 </html>
