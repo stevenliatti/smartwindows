@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 include("database_connection.php");
 
-include("head.php") 
+include("head.php");
 
 ?>
 
@@ -36,8 +36,6 @@ include("head.php")
 		}
 	?>
 </div>
-
-<?php include("javascript.php"); ?>	
 
 	<script>
 		function sliderValue(value) {

@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-include("head.php") 
+include("head.php");
 
 ?>
 
@@ -27,11 +27,6 @@ include("head.php")
 		</p>
 	</div>
 </div>
-
-
-
-
-<?php include("javascript.php"); ?>
 
 <script>
 	
