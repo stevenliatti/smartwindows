@@ -75,7 +75,7 @@ include("head.php");
 				<tbody>
 					<?php
 
-					$data_array_tab = day_data_select($db, "2016-09-13");
+					$data_array_tab = day_data_select($db, "2016-09-01", $selected_min_time, "2016-09-15", $selected_max_time);
 
 					for ($i = 0; $i < count($data_array_tab); $i++) {
 						echo "<tr><td>" . $data_array_tab[$i]["temp_int"] . "</td><td>" . $data_array_tab[$i]["temp_ext"] . 
@@ -83,6 +83,9 @@ include("head.php");
 						"</td><td>" . $data_array_tab[$i]["date"] . "</td><td>" . $data_array_tab[$i]["time"] . "</td></tr>";
 					}
 
+
+
+					database_close($db);
 					?>
 
 				</tbody>

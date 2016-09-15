@@ -1,6 +1,6 @@
 <?php 
     //importation des fichiers de fonctions
-    require 'database_connection.php';
+
 
     // define("DATABASE_IP", "192.168.32.79");
     // define("USER", "admin");
@@ -118,8 +118,6 @@
     		}
     		break;
     }
-
-    database_close($db);
 ?>
 
 
