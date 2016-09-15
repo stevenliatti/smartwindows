@@ -2,15 +2,17 @@
     //importation des fichiers de fonctions
     require 'database_connection.php';
 
-    define("DATABASE_IP", "192.168.32.79");
-    define("USER", "admin");
-    define("PASWORD", "admin");
+    // define("DATABASE_IP", "192.168.32.79");
+    // define("USER", "admin");
+    // define("PASWORD", "admin");
 
 
-    // define("DATABASE_IP", "localhost");
-    // define("USER", "root");
-    // define("PASWORD", "");
-    define("DATABASE_NAME", "smartwindows");
+    // // define("DATABASE_IP", "localhost");
+    // // define("USER", "root");
+    // // define("PASWORD", "");
+    // define("DATABASE_NAME", "smartwindows");
+
+    $page = "temp";
 
     $selected_chart = "day";
     $selected_date = date("Y-m-d");
@@ -45,10 +47,13 @@
     if (isset($_GET['selected_year'])){
     	$selected_year = $_GET['selected_year'];
     }
+    if (isset($_GET['page'])){
+    	$page = $_GET['page'];
+    }
 
-    $db = database_open(DATABASE_IP, USER, PASWORD, DATABASE_NAME);
-    //function day_data_select($conn, $day_begin, $time_begin = "00:00:00", $day_end = "", $time_end = "23:59:59")
-    echo "<br> $selected_chart <br> $selected_date <br> $selected_min_date <br> $selected_min_time <br> $selected_max_date <br> $selected_max_time<br>";
+    // $db = database_open(DATABASE_IP, USER, PASWORD, DATABASE_NAME);
+    // //function day_data_select($conn, $day_begin, $time_begin = "00:00:00", $day_end = "", $time_end = "23:59:59")
+    // echo "<br> $selected_chart <br> $selected_date <br> $selected_min_date <br> $selected_min_time <br> $selected_max_date <br> $selected_max_time<br>";
     
     $temp_int_array = [];
     $luminosity_array = [];
@@ -117,44 +122,61 @@
     database_close($db);
 ?>
 
-<!doctype html>
-<html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>Test Chart.js Raed</title>
-        <script type="text/javascript" src="Chart.bundle.js"></script>
-        <script type="text/javascript" src="used_function.js"></script>
-    </head>
-    <body>
-    	<a href="test_chart.php">home</a>
+
     	<h1><?php echo "Affichage par jour : Le " . $selected_date ?></h1>
-	   	<form action="" method="get">
-	   		Affichage par : 
-			<select name="selected_chart" onchange="change_content(this.value);">
-				<option value="day" <?php if($selected_chart == 'day'){echo("selected");}?>>jour</option>
-				<option value="day_time" <?php if($selected_chart == 'day_time'){echo("selected");}?>>tranche horaire</option>
-				<option value="month" <?php if($selected_chart == 'month'){echo("selected");}?>>mois</option>
-			</select><br>
-			<span id="selected_date" style="display: <?php if($selected_chart != 'day'){echo("none");}?>;">
-				Choisissez le jour : 
-				<input name="selected_date" type="date" value="<?php echo $selected_date; ?>"></input><br>
-			</span>
-			<span id="selected_min_max_date" style="display: <?php if($selected_chart != 'day_time'){echo("none");}?>;">
-				Choisissez la date de début : 
-				<input name="selected_min_date" type="date" value="<?php echo $selected_min_date; ?>"></input>
-				à : 
-				<input name="selected_min_time" type="time" value="<?php echo $selected_min_time; ?>"></input><br>
-				Choisissez la date de fin : 
-				<input name="selected_max_date" type="date" value="<?php echo $selected_max_date; ?>"></input>
-				à : 
-				<input name="selected_max_time" type="time" value="<?php echo $selected_max_time; ?>"></input><br>
-			</span>
-			<span id="selected_month" style="display: <?php if($selected_chart != 'month'){echo("none");}?>;">
-				Choisissez le mois : 
-				<input name="selected_month" type="month" value="<?php echo $selected_month; ?>"></input><br>
-			</span>
-			<br>
-			<input type="submit" value="Choisir">
+	   	<form action="" method="get" class="form-horizontal">
+		   	<div class="controls">
+		   	  <div class="row">
+			   <div class="col-md-4">
+		   		<label> Affichage par :</label>
+				<select name="selected_chart" onchange="change_content(this.value);" class="form-control"> 
+					<option value="day" <?php if($selected_chart == 'day'){echo("selected");}?>>jour</option>
+					<option value="day_time" <?php if($selected_chart == 'day_time'){echo("selected");}?>>tranche horaire</option>
+					<option value="month" <?php if($selected_chart == 'month'){echo("selected");}?>>mois</option>
+				</select>
+			   </div>
+			  </div>
+				<span id="selected_date" style="display: <?php if($selected_chart != 'day'){echo("none");}?>;">
+					<div class="row">
+					  <div class="col-md-4">
+						<label >Choisissez le jour :</label>
+						<input class="form-control" name="selected_date" type="date" value="<?php echo $selected_date; ?>"></input>
+					  </div>
+					</div>
+				</span>
+				<span id="selected_min_max_date" style="display: <?php if($selected_chart != 'day_time'){echo("none");}?>;">
+					<div class="row">
+					  <div class="col-md-4">
+						<label>Choisissez la date de début :</label> 
+							<input class="form-control" name="selected_min_date" type="date" value="<?php echo $selected_min_date; ?>"></input>
+					  </div>
+					  <div class="col-md-4">
+						<label>Choisissez la date de fin :</label>
+						<input class="form-control" name="selected_max_date" type="date" value="<?php echo $selected_max_date; ?>"></input>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-4">
+						<label>à :</label>
+						<input class="form-control" name="selected_min_time" type="time" value="<?php echo $selected_min_time; ?>"></input>
+					  </div>
+					  <div class="col-md-4">
+						<label>à : </label>
+						<input class="form-control" name="selected_max_time" type="time" value="<?php echo $selected_max_time; ?>"></input>
+					  </div>
+					</div>
+				</span>
+				<span id="selected_month" style="display: <?php if($selected_chart != 'month'){echo("none");}?>;">
+			   	  <div class="row">
+				   <div class="col-md-4">
+					<label>Choisissez le mois :</label>
+					<input  class="form-control" name="selected_month" type="month" value="<?php echo $selected_month; ?>"></input>
+					</div>
+					</div>
+				</span>
+				<br>
+				<input type="submit" value="Choisir">
+			</div>
 		</form>
 		<?php
 		if ($selected_chart == "day" or $selected_chart == "day_time")
@@ -274,5 +296,3 @@
 	    <?php
 	    }
 	    ?>
-    </body>
-</html>

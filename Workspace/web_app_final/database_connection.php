@@ -19,7 +19,6 @@
 	{
 		if ($day_end == "")
 			$day_end = $day_begin;
-		echo "<h3>dans la fonction SELECT : <br> $day_begin<br> $time_begin<br> $day_end<br> $time_end";
 
 		$sql = "SELECT * FROM data WHERE date >= '".$day_begin."' AND date <= '".$day_end."' AND time >= '".$time_begin."' AND time <= '".$time_end."' ORDER BY date DESC, time DESC";
 		$result = $conn->query($sql);

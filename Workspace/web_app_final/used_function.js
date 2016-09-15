@@ -132,7 +132,8 @@ function display_month(ctx, title, labels, array_moy, array_min, array_max, y_sc
 	                    max : y_scale_max
 	                }
 	            }]
-	        }
+	        },
+            responsive:false,
     	}
 	});
 }

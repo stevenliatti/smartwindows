@@ -109,8 +109,11 @@ include("head.php");
 		</div>
 	</div>
 
+
 	<div class="row-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        
+    <?php include('graphics.php'); ?>
 			<table> <!-- bootstrap classes added by the uitheme widget -->
 				<thead>
 					<tr>
