@@ -90,7 +90,7 @@ if __name__ == "__main__":
                         db_conn.insert_data(db, to_be_saved["TI"], to_be_saved["L"], to_be_saved["TE"], to_be_saved["WIND"], date_now, time_now)
                         ## fermeture de la connexion a la base de donnees
                         db_conn.database_close(db)
-                time.sleep(10)
+                time.sleep(600)
 
 
 
