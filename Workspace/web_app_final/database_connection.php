@@ -39,6 +39,33 @@
 		}
 	}
 
+	//selection des données par mois : affichage de la moyenne, le min et le max de chaque jour
+	function month_data_select($conn, $month, $year)
+	{
+		$sql = "SELECT date, AVG(temp_int) AS 'avg_temp_int', MAX(temp_int) AS 'max_temp_int',
+				MIN(temp_int) AS 'min_temp_int', AVG(luminosity) AS 'avg_lum', MAX(luminosity) AS 'max_lum',
+				MIN(luminosity) AS 'min_lum', AVG(temp_ext) AS 'avg_temp_ext', MAX(temp_ext) AS 'max_temp_ext',
+				MIN(temp_ext) AS 'min_temp_ext', AVG(wind_speed) AS 'avg_wind_speed',
+				MAX(wind_speed) AS 'max_wind_speed', MIN(wind_speed) AS 'min_wind_speed'
+				FROM data
+				WHERE MONTH(date) = '".$month."' AND YEAR(date) = '".$year."'
+				GROUP BY date";
+		$result = $conn->query($sql);
+
+		$array = [];
+		if ($result->num_rows > 0) {
+			$i = 0;
+			while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			   $array[$i] = $row;
+			   $i++;
+			}
+			return $array;
+		} else {
+			echo "<br>0 results";
+			return null;
+		}
+	}
+
 	//Sélection de la configuration utilisateur
 	function get_config($conn) {
 		$sql = "SELECT * FROM state ORDER BY id DESC LIMIT 0, 1";
