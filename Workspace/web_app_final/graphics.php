@@ -168,30 +168,6 @@
 		{
 		?>
 			<div class="row">
-			<?php
-			if ($page == "temp") {
-			?>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="temperature_day" width="700" height="500"></canvas>
-				</div>
-			<?php
-			}
-			elseif ($page == "lum") {
-			?>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="luminosity_day" width="700" height="500"></canvas>
-				</div>
-			<?php
-			}
-			elseif ($page == "wind") {
-			?>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="wind_day" width="700" height="500"></canvas>
-				</div>
-			<?php
-			}
-			else {
-			?>
 				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
 					<canvas id="temperature_day" width="400" height="400"></canvas>
 				</div>
@@ -201,9 +177,6 @@
 				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
 					<canvas id="wind_day" width="400" height="400"></canvas>
 				</div>
-			<?php
-			}
-			?>
 			</div>
 	</div>
 			<script>
@@ -228,33 +201,6 @@
 		{
 		?>
 			<div class="row">
-			<?php
-			if ($page == "temp") {
-			?>
-				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="temperature_in_month" width="500" height="400"></canvas>
-				</div>
-				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="temperature_out_month" width="500" height="400"></canvas>
-				</div>
-			<?php
-			}
-			elseif ($page == "lum") {
-			?>
-				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="luminosity_month" width="500" height="400"></canvas>
-				</div>
-			<?php
-			}
-			elseif ($page == "wind") {
-			?>
-				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-					<canvas id="wind_month" width="500" height="400"></canvas>
-				</div>
-			<?php
-			}
-			else {
-			?>
 				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 					<canvas id="temperature_in_month" width="500" height="400"></canvas>
 				</div>
@@ -267,9 +213,6 @@
 				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 					<canvas id="wind_month" width="500" height="400"></canvas>
 				</div>
-			<?php
-			}
-			?>
 			</div>
 
 

@@ -31,15 +31,18 @@
 				<ul class="nav nav-sidebar">
 					<?php
 					if (isset($_SESSION['id']) AND isset($_SESSION['name'])) {
+						$index = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']) == 'index.php' ? 'active' : '';
+						$control = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']) == 'control.php' ? 'active' : '';
 					?>
-						<li class="active"><a href="index.php">Toutes les données<span class="sr-only">(current)</span></a></li>
-						<li><a href="index.php?page=temp">Températures</a></li>
-						<li><a href="index.php?page=lum">Luminosité</a></li>
-						<li><a href="index.php?page=wind">Vent</a></li>
+						<li class="<?php echo $index;?>">
+							<a href="index.php">Accueil<span class="sr-only">(current)</span></a>
+						</li>
 						<?php
 						if ($_SESSION['role'] == "admin") {
 						?>
-						<li><a href="control.php">Contrôle</a></li>
+						<li class="<?php echo $control;?>">
+							<a href="control.php">Contrôle<span class="sr-only">(current)</span></a>
+						</li>
 						<?php
 						}
 						?>
