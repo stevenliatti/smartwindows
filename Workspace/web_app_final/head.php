@@ -45,5 +45,6 @@
 	<link rel="stylesheet" href="css/bootstrap-3.3.7/dist/css/jquery.tablesorter.pager.min.css">
 	<script src="css/bootstrap-3.3.7/dist/js/jquery.tablesorter.pager.min.js"></script>
 
-	<script type="text/javascript" src="Chart.bundle.js"></script>
-	<script type="text/javascript" src="used_function.js"></script>
+	<script type="text/javascript" src="js/Chart.bundle.js"></script>
+	<script type="text/javascript" src="js/used_function.js"></script>
+	<script type="text/javascript" src="js/sort.js"></script>

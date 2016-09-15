@@ -7,7 +7,6 @@ include("database_connection.php");
 include("head.php");
 ?>
 
-<script src="sort.js"></script>
 
 <title>Smart Windows - Données</title>
 </head>
@@ -33,8 +32,8 @@ include("head.php");
 
 	<div class="row-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
-        
-    <?php include('graphics.php'); ?>
+		
+	<?php include('graphics.php'); ?>
 			<table> <!-- bootstrap classes added by the uitheme widget -->
 				<thead>
 					<tr>
