@@ -533,7 +533,6 @@ void loop()
       windowState = 0;
     }
     
-    last_blindState = blindState;
     // Etat du store en fonction de la luminosité
     if (lightIntensity < 140 && blindState != 10) {
       blindState++;
@@ -636,6 +635,7 @@ void loop()
       }
     }
   }
+  last_blindState = blindState;
   
   // Envoi du mode d'utilisation
   Utils.long2array(mode_config,outstr);
