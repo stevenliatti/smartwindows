@@ -43,7 +43,7 @@ include("head.php");
 				//les données du tableau correspondent aux données affichées dans les graphiques.
 				//si l'utilisateur choisit d'afficher les graphiques par mois le tableau ne s'affiche pas
 				if ($selected_chart != "month" and 	count($data_array) != 0){
-					include("table.php");
+					include("table_data.php");
 				}
 			?>
 </div>

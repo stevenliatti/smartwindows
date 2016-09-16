@@ -108,9 +108,11 @@
 		date_default_timezone_set('Europe/Zurich');
 		$date = date("Y-m-d");
 		$time = date("H:i:s");
+		$user_id = $_SESSION['id'];
+
 
 		$sql = "INSERT INTO state (config_mode, window, blind, date, time, users_id) 
-				VALUES ('$mode', '$window', '$blind_value', '$date', '$time', '3')";
+				VALUES ('$mode', '$window', '$blind_value', '$date', '$time', '$user_id')";
 		$conn->query($sql);
 
 		$state = "État au : " . $date . " à " . $time;
@@ -118,6 +120,39 @@
 		include("form.php");
 	}
 
-	$db = database_open("127.0.0.1", "root", "", "smartwindows");
+	function get_users($conn) {
+		$sql = "SELECT * FROM users ORDER BY name ASC, role ASC";
+
+		$result = $conn->query($sql);
+
+		$array = [];
+		if ($result->num_rows > 0) {
+			// output data of each row
+			$i = 0;
+			while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			   $array[$i] = $row;
+			   $i++;
+			}
+			return $array;
+		} else {
+			return null;
+		}
+	}
+
+	function create_user($db, $name, $pass, $role) {
+		$pass = sha1($pass);
+		$sql = "INSERT INTO users (password, role, name) VALUES ('$pass', '$role', '$name')";
+		$db->query($sql);
+	}
+
+	function update_user($db) {
+		
+	}
+
+	function delete_user($db) {
+		
+	}
+
+	$db = database_open("127.0.0.1", "admin", "admin", "smartwindows");
 
 ?>
