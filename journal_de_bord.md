@@ -103,3 +103,8 @@ en python (voir commits du jour). Finalement, nous lisons les données sur la ba
 en python plutôt que de les écouter via un socket relié au serveur web.
 Nous avons continué les graphiques avec Chart.js et avons commencé des pages de 
 connexion/gestion des users. Il faut qu'on se grouille !
+
+#### 15.09.2016
+Aujourd'hui a été une longue journée, nous avons fait rapport et présentation 
+Et nous avons terminé (pratiquement) l'interface web, avec graphiques, tableaux et pages de connexion/
+administration.
