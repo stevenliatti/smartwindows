@@ -20,7 +20,7 @@
 		if ($day_end == "")
 			$day_end = $day_begin;
 
-		$sql = "SELECT * FROM data WHERE date >= '".$day_begin."' AND date <= '".$day_end."' AND time >= '".$time_begin."' AND time <= '".$time_end."' ORDER BY date DESC, time DESC";
+		$sql = "SELECT * FROM data WHERE date >= '".$day_begin."' AND date <= '".$day_end."' AND time >= '".$time_begin."' AND time <= '".$time_end."' ORDER BY date ASC, time ASC";
 
 		$result = $conn->query($sql);
 

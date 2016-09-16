@@ -1,20 +1,21 @@
+<div class="table-container">
 <table> <!-- bootstrap classes added by the uitheme widget -->
 	<thead>
 		<tr>
-			<th>Température interne</th>
-			<th>Température externe</th>
-			<th>Luminosité</th>
-			<th>Vitesse du vent</th>
+			<th>Temp interne<br>(en degré)</th>
+			<th>Temp externe<br>(en degré)</th>
+			<th>Luminosité<br>(en Lux)</th>
+			<th>Vitesse du vent<br>(en m/s)</th>
 			<th>Date</th>
 			<th>Heure</th>
 		</tr>
 	</thead>
 	<tfoot>
 		<tr>
-			<th>Température interne</th>
-			<th>Température externe</th>
-			<th>Luminosité</th>
-			<th>Vitesse du vent</th>
+			<th>Temp interne<br>(en degré)</th>
+			<th>Temp externe<br>(en degré)</th>
+			<th>Luminosité<br>(en Lux)</th>
+			<th>Vitesse du vent<br>(en m/s)</th>
 			<th>Date</th>
 			<th>Heure</th>
 		</tr>
@@ -38,15 +39,22 @@
 	<tbody>
 		<?php
 
-		$data_array_tab = day_data_select($db, "2016-09-01", $selected_min_time, "2016-09-15", $selected_max_time);
+		//ancien :
+		//$data_array_tab = day_data_select($db, "2016-09-01", $selected_min_time, "2016-09-15", $selected_max_time);
+		//nouveau :
+		//récupérer les données affichées dans les graphiques
+		//(pas besoin de récupérer toutes les données) se trouvant dans la variable $data_array
+		//c'est à dire, le contenu du tableau change en fonction du contenu des graphoques
+		$data_array_tab = $data_array;
 
-		for ($i = 0; $i < count($data_array_tab); $i++) {
-			echo "<tr><td>" . $data_array_tab[$i]["temp_int"] . "</td><td>" . $data_array_tab[$i]["temp_ext"] . 
-			"</td><td>" . $data_array_tab[$i]["luminosity"] . " </td><td>" . $data_array_tab[$i]["wind_speed"] . 
-			"</td><td>" . $data_array_tab[$i]["date"] . "</td><td>" . $data_array_tab[$i]["time"] . "</td></tr>";
-		}
-		database_close($db);
+	
+			for ($i = 0; $i < count($data_array_tab); $i++) {
+				echo "<tr><td>" . $data_array_tab[$i]["temp_int"] . "</td><td>" . $data_array_tab[$i]["temp_ext"] . 
+				"</td><td>" . $data_array_tab[$i]["luminosity"] . " </td><td>" . $data_array_tab[$i]["wind_speed"] . 
+				"</td><td>" . $data_array_tab[$i]["date"] . "</td><td>" . $data_array_tab[$i]["time"] . "</td></tr>";
+			}
 		?>
 
 	</tbody>
 </table>
+</div>

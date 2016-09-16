@@ -16,10 +16,13 @@
 	<link href="css/bootstrap-3.3.7/dist/css/theme.bootstrap.min.css" rel="stylesheet">    
 
 	<!-- Custom styles for this template -->
-	<link href="css/dashboard.css" rel="stylesheet">
+	<!-- <link href="css/dashboard.css" rel="stylesheet"> -->
 
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/bootstrap-3.3.7/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="css/menu_perso.css" rel="stylesheet">
 
 	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

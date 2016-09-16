@@ -70,7 +70,7 @@ function display_day(ctx, title, label_array, data_label1, data_array1, color_st
         type: 'line',
         data: data,
         options: {
-            responsive:false,
+            responsive:true,
             title: {
 	            display: true,
 	            text: title,
@@ -133,7 +133,7 @@ function display_month(ctx, title, labels, array_moy, array_min, array_max, y_sc
 	                }
 	            }]
 	        },
-            responsive:false,
+            responsive:true,
     	}
 	});
 }

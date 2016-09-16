@@ -107,8 +107,15 @@
 	}
 ?>
 
-	<div class="container-fluid">
-		<h2><?php echo "Affichage par jour : Le " . $selected_date ?></h2>
+		
+		<?php 
+			if ($selected_chart == "day")
+				echo "<h2>Affichage par jour :<br> Le " . $selected_date . "</h2>";
+			if ($selected_chart == "day_time")
+				echo "<h2>Affichage par tranche horaire :</h2>";
+			if ($selected_chart == "month")
+				echo "<h2>Affichage par mois :</h2>";
+		?>
 		<form action="" method="get" class="form-horizontal">
 			<div class="controls">
 				<div class="row">
@@ -119,6 +126,7 @@
 							<option value="day_time" <?php if($selected_chart == 'day_time'){echo("selected");}?>>tranche horaire</option>
 							<option value="month" <?php if($selected_chart == 'month'){echo("selected");}?>>mois</option>
 						</select>
+						<br>
 					</div>
 				</div>
 				<span id="selected_date" style="display: <?php if($selected_chart != 'day'){echo("none");}?>;">
@@ -168,13 +176,13 @@
 		{
 		?>
 			<div class="row">
-				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+				<div class="col-md-4">
 					<canvas id="temperature_day" width="400" height="400"></canvas>
 				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+				<div class="col-md-4">
 					<canvas id="luminosity_day" width="400" height="400"></canvas>
 				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+				<div class="col-md-4">
 					<canvas id="wind_day" width="400" height="400"></canvas>
 				</div>
 			</div>
@@ -216,7 +224,6 @@
 			</div>
 
 
-	</div>
 			<script>
 				var labels = <?php echo '["' . implode('", "', $date_array) . '"]' ?>;
 

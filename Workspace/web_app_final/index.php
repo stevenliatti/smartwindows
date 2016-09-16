@@ -18,11 +18,13 @@ include("head.php");
 </head>
 <body>
 
-<?php include("menu.php") ?>
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+			<?php include("menu.php") ?>
+
+
+
+<div class="container">
 			<h1 class="page-header">Accueil</h1>
 
 			<p>
@@ -32,22 +34,18 @@ include("head.php");
 				}
 				?>
 			</p>
-		</div>
-	</div>
-
-
-	<div class="row-fluid">
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
 	
 
-	<?php 
-		include('graphics.php'); 
-		include("table.php");
-	?>
+			<?php 
+				include('graphics.php'); 
 
-		</div>
-	</div>
+				//ce test vérifie si l'option d'affichage choisie est bien "jour" ou "tranche horaire" pour que
+				//les données du tableau correspondent aux données affichées dans les graphiques.
+				//si l'utilisateur choisit d'afficher les graphiques par mois le tableau ne s'affiche pas
+				if ($selected_chart != "month" and 	count($data_array) != 0){
+					include("table.php");
+				}
+			?>
 </div>
-
 </body>
 </html>
