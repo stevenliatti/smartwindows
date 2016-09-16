@@ -81,17 +81,13 @@
 	<div class="container">
 
 	  <form method="post" action="" class="form-signin">
-		<h2 class="form-signin-heading">Please sign in</h2>
-		<label for="inputName" class="sr-only">Name</label>
+		<h2 class="form-signin-heading">Connexion</h2>
+		<label for="inputName" class="sr-only">Utilisateur</label>
 		<input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" required autofocus>
-		<label for="inputPassword" class="sr-only">Password</label>
+		<label for="inputPassword" class="sr-only">Mot de passe</label>
 		<input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
-		<div class="checkbox">
-		  <label>
-			<input type="checkbox" value="remember-me"> Remember me
-		  </label>
-		</div>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Connexion</button>
 	  </form>
 	  <p class="center"><?php echo $login; ?></p>
 
